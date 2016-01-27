@@ -1,3 +1,7 @@
+<?php 
+include_once 'constants.php';
+?>
+
 <html>
 <head>
 	<title>CARIBARANG</title>
@@ -26,7 +30,7 @@
 	<script type="text/javascript">
 		$('#frm_search').click(function() {
 			$.ajax({
-				url: 'http://localhost:2903/api/search',
+				url: '<?php echo API_SERVER_URI; ?>/api/search',
 				type: 'POST',
 				dataType: 'json',
 				success: function(data) {
