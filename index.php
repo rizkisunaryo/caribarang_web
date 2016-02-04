@@ -2,12 +2,49 @@
 include_once 'constants.php';
 ?>
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 	<title>CARIBARANG</title>
+	<meta charset="utf-8"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" />
 	<script type="text/javascript" src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 <body>
+	<div class="container">
+		<div class="jumbotron">
+			<h1>caribarang</h1>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-3"></div>
+			<div class="col-sm-6">
+				<form role="form">
+				  	<div class="form-group">
+				    	<label for="keyword">Kata kunci:</label>
+				    	<input type="text" class="form-control" id="keyword">
+				  	</div>
+				  	<div class="form-group">
+					    <label for="min-price">Harga minimum:</label>
+				    	<input type="text" class="form-control" id="min-price">
+				  	</div>
+				  	<div class="form-group">
+					    <label for="max-price">Harga maksimum:</label>
+				    	<input type="text" class="form-control" id="max-price">
+				  	</div>
+				  	<button type="submit" class="btn btn-default">Cari</button>
+				</form>
+			</div>
+			<div class="col-sm-3"></div>
+		</div>
+
+		 
+	</div>
+
+
+
 	<table>
 		<tr>
 			<td>Keyword</td>
