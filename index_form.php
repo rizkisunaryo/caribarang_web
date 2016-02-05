@@ -50,12 +50,6 @@
 	</div>
 	
 	<script type="text/javascript">
-		$(function() {
-		    $('#form').submit(function() {
-		        $('#form_keyword').val($('#form_keyword').val().split(' ').join('###'));
-		        return true; // return false to cancel form action
-		    });
-		});
 		$('#frm_search').click(function() {
 			$.ajax({
 				url: '<?php echo API_SERVER_URI; ?>/api/search',

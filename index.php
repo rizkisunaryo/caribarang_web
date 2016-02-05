@@ -17,7 +17,7 @@ include_once 'inc/db.php';
 	<?php
 
 	if (isset($_GET['form_submit'])) {
-		
+		echo $_GET['form_keyword'];
 	} else {
 		include_once 'index_form.php';
 	}
