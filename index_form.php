@@ -42,7 +42,7 @@
 				    <input type="text" class="form-control" id="form_keyword" name="form_keyword" placeholder="Kata kunci"><br />
 				    <input type="tel" class="form-control" id="form_min-price" name="form_min-price" placeholder="Harga minimum" onkeypress="return isNumberKey(event);" onkeyup="this.value=numberWithCommas(this.value);"><br />
 				    <input type="tel" class="form-control" id="form_max-price" name="form_max-price" placeholder="Harga maximum" onkeypress="return isNumberKey(event);" onkeyup="this.value=numberWithCommas(this.value);"><br />
-				  	<button type="submit" class="btn btn-default" id="form_submit" name="form_submit">C A R I</button>
+				  	<button type="submit" class="btn btn-default">C A R I</button>
 				</form>
 			</div>
 			<div class="col-sm-3"></div>

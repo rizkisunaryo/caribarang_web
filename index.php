@@ -15,7 +15,7 @@ include_once 'inc/db.php';
 <body>
 
 	<?php
-	if (isset($_GET['form_submit'])) include_once 'index_list.php';
+	if (isset($_GET['form_keyword'])) include_once 'index_list.php';
 	else include_once 'index_form.php';
 	?>
 

@@ -13,22 +13,120 @@ $formKeyword = trim($_GET['form_keyword']);
 $formMinPrice = str_replace(',', '', $_GET['form_min-price']);
 $formMaxPrice = str_replace(',', '', $_GET['form_max-price']);
 
+$curPage = isset($_GET['page']) ? intval($_GET['page']): 1;
+$params=array(
+		'form_category' => $_GET['form_category'],
+		'form_keyword' => $_GET['form_keyword'],
+		'form_min-price' => $_GET['form_min-price'],
+		'form_max-price' => $_GET['form_max-price'],
+	);
+$params1=$params;
+$params2=$params;
+$params3=$params;
+$params4=$params;
+$params5=$params;
+
+$liPage1 = '';
+$liPage2 = '';
+$liPage3 = '';
+$liPage4 = '';
+$liPage5 = '';
+if ($curPage==1) {
+	$params2['page'] = 2;
+	$params3['page'] = 3;
+	$params4['page'] = 4;
+	$params5['page'] = 5;
+
+	$liPage1 = '<li class="active"><a>1</a></li>';
+	$liPage2 = '<li><a href=".?'.http_build_query($params2).'">2</a></li>';
+	$liPage3 = '<li><a href=".?'.http_build_query($params3).'">3</a></li>';
+	$liPage4 = '<li><a href=".?'.http_build_query($params4).'">4</a></li>';
+	$liPage5 = '<li><a href=".?'.http_build_query($params5).'">5</a></li>';
+} elseif ($curPage==2) {
+	$params1['page'] = 1;
+	$params3['page'] = 3;
+	$params4['page'] = 4;
+	$params5['page'] = 5;
+
+	$liPage1 = '<li><a href=".?'.http_build_query($params1).'">1</a></li>';
+	$liPage2 = '<li class="active"><a>2</a></li>';	
+	$liPage3 = '<li><a href=".?'.http_build_query($params3).'">3</a></li>';
+	$liPage4 = '<li><a href=".?'.http_build_query($params4).'">4</a></li>';
+	$liPage5 = '<li><a href=".?'.http_build_query($params5).'">5</a></li>';
+} else {
+	$params1['page'] = $curPage-2;
+	$params2['page'] = $curPage-1;
+	$params4['page'] = $curPage+1;
+	$params5['page'] = $curPage+2;
+
+	$liPage1 = '<li><a href=".?'.http_build_query($params1).'">'.($curPage-2).'</a></li>';
+	$liPage2 = '<li><a href=".?'.http_build_query($params2).'">'.($curPage-1).'</a></li>';
+	$liPage3 = '<li class="active"><a>'.$curPage.'</a></li>';
+	$liPage4 = '<li><a href=".?'.http_build_query($params4).'">'.($curPage+1).'</a></li>';
+	$liPage5 = '<li><a href=".?'.http_build_query($params5).'">'.($curPage+2).'</a></li>';
+}
+
 $reqJson = array();
 $reqJson['Category'] = $formCategory;
 $reqJson['Subcategory'] = $formSubcategory;
 $reqJson['Keyword'] = $formKeyword;
 $reqJson['MinPrice'] = $formMinPrice;
 $reqJson['MaxPrice'] = $formMaxPrice;
-$reqJson['From'] = '0';
-$reqJson['Size'] = '30';
-
+$reqJson['From'] = strval(($curPage-1)*10);
+$reqJson['Size'] = '10';
 $reqJsonStr = json_encode($reqJson);
 ?>
 
-<div id="left-floating-title" style="position:fixed; left:20px;">
-	<h1>caribarang</h1>
+<style type="text/css">
+
+div.item-container {
+	border-color: lightblue;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+    margin-bottom: 10px;
+    margin:0 auto;
+    padding: 5px;
+    width: 90%;
+}
+
+@media all and (min-width: 768px) {
+  	div.item-container {
+		border-color: lightblue;
+	    border-radius: 5px;
+	    border-style: solid;
+	    border-width: 1px;
+	    display: inline-block;
+	    margin-bottom: 10px;
+	    margin-right: 1%;
+	    padding: 5px;
+	    width: 19%;
+	}
+}
+</style>
+
+<div class="container">
+	<div class="row text-center">
+		<div class="col-sm-3"></div>
+		<div class="col-sm-6 text-center">
+			<h1>caribarang</h1><br />
+		</div>
+		<div class="col-sm-3 text-right">
+			<div style="padding-top:10px; font-size:1.2em;"><a href=".">back to search</a></div>
+		</div>
+	</div>
+	<div class="row" id="result-row-1"></div>
+	<div class="row" id="result-row-2"></div>
+	<div class="row">
+		<div class="col-sm-4"></div>
+		<div class="col-sm-4 text-center">
+			<ul class="pagination">
+				<li><a href=".?<?php echo http_build_query($params); ?>">&lt;&lt;</a></li>
+				<?php echo $liPage1.$liPage2.$liPage3.$liPage4.$liPage5; ?>
+			</ul>
+		</div>
+	</div>
 </div>
-<div class="container"></div>
 
 <script type="text/javascript">
 	$.ajax({
@@ -36,22 +134,24 @@ $reqJsonStr = json_encode($reqJson);
 		type: 'POST',
 		dataType: 'json',
 		success: function(data) {
-			var html = '';
+			var resultRow1Html = '';
+			var resultRow2Html = '';
 			$.each(data.hits.hits, function(i,e) {
 				var v = e._source;
-				html += '<div class="row">\n ' + 
-						'	<div class="col-sm-3"></div>\n ' + 
-						'	<div class="col-sm-6 text-center">\n ' + 
-						'		<span style="font-weight:bold;">'+v.Source+'</span><br />\n ' + 
-						'		<span><a href="'+v.Uri+'" target="_blank">'+v.Name+'</a></span><br />\n ' + 
-						'		<span style="font-size:1.5em;">'+numberWithCommas(String(v.Price))+'</span>\n ' + 
-						'		<a href="'+v.Uri+'" target="_blank"><img class="img-responsive" src="'+v.ImageUri+'" style="margin:0 auto;" width="90%" /></a> \n ' + 
-						'		<hr style="border-color: black;" />\n ' + 
-						'	</div>\n ' + 
-						'	<div class="col-sm-3"></div>\n ' + 
-						'</div>';
+				var html = '<div class="item-container text-center">\n ' + 
+							'	<span style="font-weight: bold;">'+v.Source+'</span><br>\n ' + 
+							'	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a href="'+v.Uri+'" target="_blank">'+v.Name+'</a></div>\n ' + 
+							'	<span style="font-size: 1.5em;">'+numberWithCommas(String(v.Price))+'</span><br>\n ' + 
+							'	<a href="'+v.Uri+'" target="_blank"><img width="100%" src="'+v.ImageUri+'"></a>\n ' + 
+							'</div>';
+				if (i<=4) {
+					resultRow1Html += html;
+				} else if (i<=9) {
+					resultRow2Html += html;
+				}
 			});
-			$('.container').html(html);
+			$('#result-row-1').html(resultRow1Html);
+			$('#result-row-2').html(resultRow2Html);
 		}.bind(this),
 		error: function(xhr, status, err) {
 			
