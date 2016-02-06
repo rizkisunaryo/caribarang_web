@@ -1,5 +1,6 @@
 <?php
 include_once 'inc/constants.php';
+include_once 'inc/js_above.php';
 
 $formCategory = '';
 $formSubcategory = '';
@@ -18,11 +19,16 @@ $reqJson['Subcategory'] = $formSubcategory;
 $reqJson['Keyword'] = $formKeyword;
 $reqJson['MinPrice'] = $formMinPrice;
 $reqJson['MaxPrice'] = $formMaxPrice;
+$reqJson['From'] = '0';
+$reqJson['Size'] = '30';
 
 $reqJsonStr = json_encode($reqJson);
 ?>
 
-<table id="result"></table>
+<div id="left-floating-title" style="position:fixed; left:20px;">
+	<h1>caribarang</h1>
+</div>
+<div class="container"></div>
 
 <script type="text/javascript">
 	$.ajax({
@@ -33,13 +39,19 @@ $reqJsonStr = json_encode($reqJson);
 			var html = '';
 			$.each(data.hits.hits, function(i,e) {
 				var v = e._source;
-				html+='<tr>\n' + 
-							'	<td>'+v.Price+'</td>\n' + 
-							'	<td><img src="'+v.ImageUri+'" width="100" /></td>\n' + 
-							'	<td><a href="'+v.Uri+'">'+v.Name+'</a></td>\n' + 
-							'</tr>';
+				html += '<div class="row">\n ' + 
+						'	<div class="col-sm-3"></div>\n ' + 
+						'	<div class="col-sm-6 text-center">\n ' + 
+						'		<span style="font-weight:bold;">'+v.Source+'</span><br />\n ' + 
+						'		<span><a href="'+v.Uri+'" target="_blank">'+v.Name+'</a></span><br />\n ' + 
+						'		<span style="font-size:1.5em;">'+numberWithCommas(String(v.Price))+'</span>\n ' + 
+						'		<a href="'+v.Uri+'" target="_blank"><img class="img-responsive" src="'+v.ImageUri+'" style="margin:0 auto;" width="90%" /></a> \n ' + 
+						'		<hr style="border-color: black;" />\n ' + 
+						'	</div>\n ' + 
+						'	<div class="col-sm-3"></div>\n ' + 
+						'</div>';
 			});
-			$('#result').html(html);
+			$('.container').html(html);
 		}.bind(this),
 		error: function(xhr, status, err) {
 			
