@@ -142,13 +142,19 @@ div.item-container {
 							'	<span style="font-weight: bold;">'+v.Source+'</span><br>\n ' + 
 							'	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a href="'+v.Uri+'" target="_blank">'+v.Name+'</a></div>\n ' + 
 							'	<span style="font-size: 1.5em;">'+numberWithCommas(String(v.Price))+'</span><br>\n ' + 
-							'	<a href="'+v.Uri+'" target="_blank"><img width="100%" src="'+v.ImageUri+'"></a>\n ' + 
+							'	<a href="'+v.Uri+'" target="_blank"><img style="max-width:100%;" src="assets/img/no-image.png" id="preload-image_'+i+'"></a>\n ' + 
 							'</div>';
 				if (i<=4) {
 					resultRow1Html += html;
 				} else if (i<=9) {
 					resultRow2Html += html;
 				}
+
+				var img = new Image();
+				img.onload = function () {
+				   $('#preload-image_'+i).attr('src',v.ImageUri);
+				}
+				img.src = v.ImageUri;
 			});
 			$('#result-row-1').html(resultRow1Html);
 			$('#result-row-2').html(resultRow2Html);
