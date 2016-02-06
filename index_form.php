@@ -48,33 +48,3 @@
 			<div class="col-sm-3"></div>
 		</div>		 
 	</div>
-	
-	<script type="text/javascript">
-		$('#frm_search').click(function() {
-			$.ajax({
-				url: '<?php echo API_SERVER_URI; ?>/api/search',
-				type: 'POST',
-				dataType: 'json',
-				success: function(data) {
-					var html = '';
-					$.each(data.hits.hits, function(i,e) {
-						var v = e._source;
-						html+='<tr>\n' + 
-									'	<td>'+v.Price+'</td>\n' + 
-									'	<td><img src="'+v.ImageUri+'" width="100" /></td>\n' + 
-									'	<td><a href="'+v.Uri+'">'+v.Name+'</a></td>\n' + 
-									'</tr>';
-					});
-					$('#result').html(html);
-				}.bind(this),
-				error: function(xhr, status, err) {
-					
-				}.bind(this),
-				data: JSON.stringify({
-					Keyword: $('#form_keyword').val(),
-					MinPrice: $('#form_min-price').val(),
-					MaxPrice: $('#form_max-price').val()
-				})
-			});
-		})
-	</script>

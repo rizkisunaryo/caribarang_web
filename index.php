@@ -1,5 +1,4 @@
 <?php 
-include_once 'constants.php';
 include_once 'inc/db.php';
 ?>
 
@@ -14,14 +13,11 @@ include_once 'inc/db.php';
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 <body>
+
 	<?php
-
-	if (isset($_GET['form_submit'])) {
-		echo $_GET['form_keyword'];
-	} else {
-		include_once 'index_form.php';
-	}
-
+	if (isset($_GET['form_submit'])) include_once 'index_list.php';
+	else include_once 'index_form.php';
 	?>
+
 </body>
 </html>
