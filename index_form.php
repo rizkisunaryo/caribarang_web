@@ -1,11 +1,18 @@
 <?php
 	include_once 'inc/js_above.php';
+	include_once 'inc/js_fb.php';
 ?>
 
 	<div class="container">
 		<div class="jumbotron">
 			<h1>caribarang</h1>
 			<p style="color:blue;">Mau belanja online? Cari aja di sini!</p>
+		</div>
+
+		<div class="row text-right" style="margin-right:5px; margin-bottom:20px;">
+			<div id="fb-root"></div>
+			<div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="false" onlogin="checkLoginState();"></div>
+			<!-- <button onclick="logoutFB();">logout</button> -->
 		</div>
 
 		<div class="row">

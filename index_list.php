@@ -1,6 +1,7 @@
 <?php
 include_once 'inc/constants.php';
 include_once 'inc/js_above.php';
+include_once 'inc/js_fb.php';
 
 $formCategory = '';
 $formSubcategory = '';
@@ -109,10 +110,20 @@ div.item-container {
 	<div class="row text-center">
 		<div class="col-sm-3"></div>
 		<div class="col-sm-6 text-center">
-			<h1>caribarang</h1><br />
+			<h1>caribarang</h1>
 		</div>
-		<div class="col-sm-3 text-right">
-			<div style="padding-top:10px; font-size:1.2em;"><a href=".">back to search</a></div>
+		<div class="col-sm-3">
+		</div>
+	</div>
+	<div class="row" style="margin-bottom:10px;">
+		<div class="col-sm-12">
+			<div class="text-left" style="float:left;">
+				<button type="button" class="btn btn-warning">SEARCH</button>
+			</div>
+			<div class="text-right" style="float:right; padding-top:5px;">
+				<div id="fb-root"></div>
+				<div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="false" onlogin="checkLoginState();"></div>
+			</div>
 		</div>
 	</div>
 	<div class="row" id="result-row-1"></div>
