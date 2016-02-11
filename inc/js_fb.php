@@ -18,13 +18,15 @@ include_once 'constants.php';
       // The person is logged into Facebook, but not your app.
       // document.getElementById('status').innerHTML = 'Please log ' +
       //   'into this app.';
-      $('#login-div').show();
+      $('#user-drop-down').hide();
+      $('#fb-login-div').show();
     } else {
       // The person is not logged into Facebook, so we're not sure if
       // they are logged into this app or not.
       // document.getElementById('status').innerHTML = 'Please log ' +
       //   'into Facebook.';
-      $('#login-div').show();
+      $('#user-drop-down').hide();
+      $('#fb-login-div').show();
     }
   }
 
@@ -84,24 +86,18 @@ include_once 'constants.php';
         dataType: 'json',
         success: function(data) {
           if (data.Message.trim()!="") {
-            $('#login-div').show();
+            $('#user-drop-down').hide();
+            $('#fb-login-div').show();
             alert(data.Message);
             return;
           }
-          $('#login-div').html('<div style="margin-top:-9px; cursor:pointer; float:right;"><ul class="nav nav-pills left">\n ' + 
-                              '    <li class="dropdown active span8">\n ' + 
-                              '        <a class="dropdown-toggle" id="inp_impact" data-toggle="dropdown">\n ' + 
-                              '            <span id="dropdown_title">'+response.name+'</span>&nbsp;<span class="caret"></span>\n ' + 
-                              '        </a>\n ' + 
-                              '        <ul ID="divNewNotifications" class="dropdown-menu" style="cursor:pointer;">\n ' + 
-                              '            <li><a>Log Out</a></li> \n ' + 
-                              '        </ul>\n ' + 
-                              '    </li>\n ' + 
-                              '</ul></div>');
-          $('#login-div').show();
+          $('#user-full-name').html(response.name);
+          $('#fb-login-div').hide();
+          $('#user-drop-down').show();
         }.bind(this),
         error: function(xhr, status, err) {
-          $('#login-div').show();
+          $('#user-drop-down').hide();
+          $('#fb-login-div').show();
           alert("please login respectively");
         }.bind(this),
         data: JSON.stringify({
@@ -114,7 +110,7 @@ include_once 'constants.php';
 
   function logoutFB() {
     FB.logout(function(response) {
-  location.reload();
-});
+      document.location.reload();
+    });
   }
 </script>

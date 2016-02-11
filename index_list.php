@@ -120,14 +120,28 @@ div.item-container {
 			<div class="text-left" style="float:left;">
 				<button type="button" class="btn btn-warning">SEARCH</button>
 			</div>
-			<div id="login-div" class="text-right" style="float:right; padding-top:5px; display:none;">
-				<div id="fb-root"></div>
-				<div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="false" onlogin="checkLoginState();"></div>
+			<div class="text-right" style="float:right; padding-top:5px;">
+				<div id="fb-login-div" style="display:none;">
+					<div id="fb-root"></div>
+					<div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="false" onlogin="checkLoginState();"></div>
+				</div>
+				<div id="user-drop-down" style="margin-top:-9px; cursor:pointer; float:right; display:none;">
+					<ul class="nav nav-pills left">
+						<li class="dropdown active span8">
+							<a class="dropdown-toggle" id="inp_impact" data-toggle="dropdown">
+								<span id="user-full-name"></span>&nbsp;<span class="caret"></span>
+							</a>
+							<ul ID="divNewNotifications" class="dropdown-menu" style="cursor:pointer;">
+								<li><a onclick="logoutFB();">Log Out</a></li> 
+							</ul>
+						</li>
+					</ul>
+				</div>
 			</div>
 			<script type="text/javascript">
 				$('.dropdown-toggle').dropdown();
 				$('#divNewNotifications li').on('click', function() {
-			    	$('#dropdown_title').html($(this).find('a').html());
+			    	$('#user-full-name').html($(this).find('a').html());
 			    });
 			</script>
 		</div>
