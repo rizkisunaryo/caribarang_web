@@ -5,15 +5,20 @@
 
 	<div class="container">
 		<div class="jumbotron">
-			<h1>caribarang</h1>
+			<h1>CariBarang</h1>
 			<p style="color:blue;">Mau belanja online? Cari aja di sini!</p>
 		</div>
 
-		<div class="row text-right" style="margin-right:5px; margin-bottom:20px;">
+		<div id="login-div" class="row text-right" style="margin-right:5px; margin-bottom:20px; display:none;">
 			<div id="fb-root"></div>
 			<div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="false" onlogin="checkLoginState();"></div>
-			<!-- <button onclick="logoutFB();">logout</button> -->
 		</div>
+		<script type="text/javascript">
+			$('.dropdown-toggle').dropdown();
+			$('#divNewNotifications li').on('click', function() {
+		    	$('#dropdown_title').html($(this).find('a').html());
+		    });
+		</script>
 
 		<div class="row">
 			<div class="col-sm-3"></div>

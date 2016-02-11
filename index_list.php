@@ -110,7 +110,7 @@ div.item-container {
 	<div class="row text-center">
 		<div class="col-sm-3"></div>
 		<div class="col-sm-6 text-center">
-			<h1>caribarang</h1>
+			<h1>CariBarang</h1>
 		</div>
 		<div class="col-sm-3">
 		</div>
@@ -120,10 +120,16 @@ div.item-container {
 			<div class="text-left" style="float:left;">
 				<button type="button" class="btn btn-warning">SEARCH</button>
 			</div>
-			<div class="text-right" style="float:right; padding-top:5px;">
+			<div id="login-div" class="text-right" style="float:right; padding-top:5px; display:none;">
 				<div id="fb-root"></div>
 				<div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="false" onlogin="checkLoginState();"></div>
 			</div>
+			<script type="text/javascript">
+				$('.dropdown-toggle').dropdown();
+				$('#divNewNotifications li').on('click', function() {
+			    	$('#dropdown_title').html($(this).find('a').html());
+			    });
+			</script>
 		</div>
 	</div>
 	<div class="row" id="result-row-1"></div>
