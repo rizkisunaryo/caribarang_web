@@ -85,7 +85,7 @@ include_once 'inc/css.php';
 <div class="container">
 	<div class="row text-center">
 		<div class="col-sm-3"></div>
-		<div class="col-sm-6 text-center">
+		<div class="col-sm-6 text-center" style="margin-bottom:20px;">
 			<h1>CariBarang</h1>
 		</div>
 		<div class="col-sm-3">
@@ -94,9 +94,67 @@ include_once 'inc/css.php';
 	<div class="row" style="margin-bottom:10px;">
 		<div class="col-sm-12">
 			<div class="text-left" style="float:left;">
-				<button type="button" class="btn btn-warning">SEARCH</button>
+				<!-- <button type="button" class="btn btn-warning">SEARCH</button> -->
+				<a href=".">HOME</a> | <a href="#" data-toggle="modal" data-target="#myModal">SEARCH</a>
+				<!-- Modal -->
+				<div class="modal fade" id="myModal" role="dialog">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">CariBarang</h4>
+							</div>
+							<div class="modal-body">
+								<form role="form" method="GET" id="form">
+									<select class="form-control" id="form_category" name="form_category">
+										<option value="">=== Kategori ===</option>
+										<?php
+
+										$sql = "SELECT category,subcategory,label FROM category WHERE is_deleted=0 ORDER BY category,subcategory ";
+										$result = $conn->query($sql);
+
+										
+									    while($row = $result->fetch_assoc()) {
+									    	$value = $row['subcategory'];
+									    	$label = $row['label'];
+
+									    	if ($value=='') {
+									    		$value = $row['category'];
+									    	} else {
+									    		$label = '&nbsp;&nbsp;&nbsp;' . $label;
+									    	}
+
+									    	$selected = '';
+									    	if ($value==$_GET['form_category']) {
+									    		$selected = ' selected="selected" ';
+									    	} 
+									        // echo "id: " . $row["id"]. " - Name: " . $row["firstname"]. " " . $row["lastname"]. "<br>";
+									    ?>
+
+									    <option value="<?php echo $value; ?>" <?php echo $selected; ?>><?php echo $label; ?></option>
+
+									    <?php
+									    }						
+										$conn->close();
+
+										?>
+									</select><br />
+								    <input type="text" class="form-control" id="form_keyword" name="form_keyword" placeholder="Kata kunci" value="<?php echo $_GET['form_keyword']; ?>"><br />
+								    <input type="tel" class="form-control" id="form_min-price" name="form_min-price" placeholder="Harga minimum" onkeypress="return isNumberKey(event);" onkeyup="this.value=numberWithCommas(this.value);" value="<?php echo $_GET['form_min-price']; ?>"><br />
+								    <input type="tel" class="form-control" id="form_max-price" name="form_max-price" placeholder="Harga maximum" onkeypress="return isNumberKey(event);" onkeyup="this.value=numberWithCommas(this.value);" value="<?php echo $_GET['form_max-price']; ?>"><br />
+								    <div class="text-right">
+								    	<button type="submit" class="btn btn-default">C A R I</button>
+								    </div>
+								</form>
+							</div>
+							<!-- <div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">SEARCH</button>
+							</div> -->
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="text-right" style="float:right; padding-top:5px;">
+			<div class="text-right" style="float:right;">
 				<div id="fb-login-div" style="display:none;">
 					<div id="fb-root"></div>
 					<div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="false" onlogin="checkLoginState();"></div>

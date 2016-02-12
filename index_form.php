@@ -90,43 +90,52 @@
 		<div class="row" id="suggestions-title"></div>
 		<div class="row" id="suggestions-row-1"></div>
 		<script type="text/javascript">
-			$.ajax({
-				url: '<?php echo API_SERVER_URI; ?>/api/search/list',
-				type: 'POST',
-				dataType: 'json',
-				success: function(data) {
-					$('#suggestions-title').html('<hr><h3>SUGGESTIONS</h3>');
-					var suggestionsRow1Html = '';
-					$.each(data.hits.hits, function(i,e) {
-						var v = e._source;
-						var html = '<div class="item-container text-center">\n ' + 
-									'	<span style="font-weight: bold;">'+v.Source+'</span><br>\n ' + 
-									'	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank">'+v.Name+'</a></div>\n ' + 
-									'	<span style="font-size: 1.5em;">'+numberWithCommas(String(v.Price))+'</span><br>\n ' + 
-									'	<a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank"><img style="max-width:100%;" src="assets/img/no-image.png" id="suggestions-preload-image_'+i+'"></a>\n ' + 
-									'</div>';
-						if (i<=4) {
-							suggestionsRow1Html += html;
-						}
+			function fbLoginSuccessCallback() {
+				$.ajax({
+					url: '<?php echo API_SERVER_URI; ?>/api/suggestions/list',
+					type: 'POST',
+					dataType: 'json',
+					success: function(data) {
+						if (typeof data.Message !== 'undefined' && data.Message!=null && data.Message!="") {
+							return;
+						};
+						if (data.hits.hits.length < 1) {
+							return;
+						};
 
-						var img = new Image();
-						img.onload = function () {
-						   $('#suggestions-preload-image_'+i).attr('src',v.ImageUri);
-						}
-						img.src = v.ImageUri;
-					});
-					$('#suggestions-row-1').html(suggestionsRow1Html);
-				}.bind(this),
-				error: function(xhr, status, err) {
-					// EMPTY
-				}.bind(this),
-				data: JSON.stringify({
-					Id: id,
-					Token: token,
-					LoginType: 'fb',
-					Size: '5'
-				})
-			});
+						$('#suggestions-title').html('<hr><h3>SUGGESTIONS</h3>');
+						var suggestionsRow1Html = '';
+						$.each(data.hits.hits, function(i,e) {
+							var v = e._source;
+							var html = '<div class="item-container text-center">\n ' + 
+										'	<span style="font-weight: bold;">'+v.Source+'</span><br>\n ' + 
+										'	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank">'+v.Name+'</a></div>\n ' + 
+										'	<span style="font-size: 1.5em;">'+numberWithCommas(String(v.Price))+'</span><br>\n ' + 
+										'	<a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank"><img style="max-width:100%;" src="assets/img/no-image.png" id="suggestions-preload-image_'+i+'"></a>\n ' + 
+										'</div>';
+							if (i<=4) {
+								suggestionsRow1Html += html;
+							}
+
+							var img = new Image();
+							img.onload = function () {
+							   $('#suggestions-preload-image_'+i).attr('src',v.ImageUri);
+							}
+							img.src = v.ImageUri;
+						});
+						$('#suggestions-row-1').html(suggestionsRow1Html);
+					}.bind(this),
+					error: function(xhr, status, err) {
+						// EMPTY
+					}.bind(this),
+					data: JSON.stringify({
+						Id: id,
+						Token: token,
+						LoginType: 'fb',
+						Size: '5'
+					})
+				});
+			}
 		</script>
 
 
