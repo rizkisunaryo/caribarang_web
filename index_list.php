@@ -160,8 +160,25 @@ div.item-container {
 </div>
 
 <script type="text/javascript">
+	function popularSave(uri) {
+		$.ajax({
+			url: '<?php echo API_SERVER_URI; ?>/api/popular/save',
+			type: 'POST',
+			dataType: 'json',
+			success: function(data) {
+				// EMPTY
+			}.bind(this),
+			error: function(xhr, status, err) {
+				// EMPTY
+			}.bind(this),
+			data: JSON.stringify({
+				Uri: uri
+			})
+		});
+	}
+
 	$.ajax({
-		url: '<?php echo API_SERVER_URI; ?>/api/search',
+		url: '<?php echo API_SERVER_URI; ?>/api/search/list',
 		type: 'POST',
 		dataType: 'json',
 		success: function(data) {
@@ -171,9 +188,9 @@ div.item-container {
 				var v = e._source;
 				var html = '<div class="item-container text-center">\n ' + 
 							'	<span style="font-weight: bold;">'+v.Source+'</span><br>\n ' + 
-							'	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a href="'+v.Uri+'" target="_blank">'+v.Name+'</a></div>\n ' + 
+							'	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank">'+v.Name+'</a></div>\n ' + 
 							'	<span style="font-size: 1.5em;">'+numberWithCommas(String(v.Price))+'</span><br>\n ' + 
-							'	<a href="'+v.Uri+'" target="_blank"><img style="max-width:100%;" src="assets/img/no-image.png" id="preload-image_'+i+'"></a>\n ' + 
+							'	<a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank"><img style="max-width:100%;" src="assets/img/no-image.png" id="preload-image_'+i+'"></a>\n ' + 
 							'</div>';
 				if (i<=4) {
 					resultRow1Html += html;

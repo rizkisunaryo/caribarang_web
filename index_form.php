@@ -74,3 +74,28 @@
 			<div class="col-sm-3"></div>
 		</div>		 
 	</div>
+
+	<script type="text/javascript">
+		$('#form').submit(function() {
+			var keyword = $('#form_keyword').val().trim();
+			if (id.trim()=='' || token.trim()=='' || keyword=='') return true;
+
+			$.ajax({
+				url: '<?php echo API_SERVER_URI; ?>/api/search/save',
+				type: 'POST',
+				dataType: 'json',
+				success: function(data) {
+					// EMPTY
+				}.bind(this),
+				error: function(xhr, status, err) {
+					// EMPTY
+				}.bind(this),
+				data: JSON.stringify({
+					Id: id,
+					Token: token,
+					LoginType: 'fb',
+					Keyword: $('#form_keyword').val().trim()
+				})
+			});
+		})
+	</script>

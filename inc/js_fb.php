@@ -3,6 +3,10 @@ include_once 'constants.php';
 ?>
 
 <script>
+var id = '';
+var token = '';
+var name = '';
+
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
     console.log('statusChangeCallback');
@@ -91,6 +95,10 @@ include_once 'constants.php';
             alert(data.Message);
             return;
           }
+          id = response.id;
+          name = response.name;
+          token = FB.getAuthResponse()['accessToken'];
+
           $('#user-full-name').html(response.name);
           $('#fb-login-div').hide();
           $('#user-drop-down').show();
