@@ -209,9 +209,15 @@ include_once 'inc/js_below.php';
 				var v = e._source;
 				var html = '<div class="item-container text-center">\n ' + 
 							'	<span style="font-weight: bold;">'+v.Source+'</span><br>\n ' + 
-							'	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank">'+v.Name+'</a></div>\n ' + 
+							'	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%">\n ' + 
+							'		<a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank">'+v.Name+'</a>\n ' + 
+							'	</div>\n ' + 
 							'	<span style="font-size: 1.5em;">'+numberWithCommas(String(v.Price))+'</span><br>\n ' + 
-							'	<a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank"><img style="max-width:100%;" src="assets/img/no-image.png" id="preload-image_'+i+'"></a>\n ' + 
+							'	<div class="cropped-image-container">\n ' + 
+							'		<a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank">\n ' + 
+							'			<img class="cropped-image" style="max-width:100%;" src="assets/img/no-image.png" id="preload-image_'+i+'" />\n ' + 
+							'		</a>\n ' + 
+							'	</div>\n ' + 
 							'</div>';
 				if (i<=4) {
 					resultRow1Html += html;
@@ -232,5 +238,9 @@ include_once 'inc/js_below.php';
 			
 		}.bind(this),
 		data: '<?php echo $reqJsonStr; ?>'
+	});
+
+	$( window ).resize(function() {
+		console.log((document.getElementById('preload-image_1').clientWidth)+":"+($(window).width()));
 	});
 </script>

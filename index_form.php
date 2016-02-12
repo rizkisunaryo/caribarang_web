@@ -87,7 +87,7 @@
 		<!-- ==============
 		SUGGESTIONS SECTION
 		=============== -->
-		<div class="row" id="suggestions-title"></div>
+		<div class="row" id="suggestions-title" style="padding-left:10px;"></div>
 		<div class="row" id="suggestions-row-1"></div>
 		<script type="text/javascript">
 			function fbLoginSuccessCallback() {
@@ -109,9 +109,15 @@
 							var v = e._source;
 							var html = '<div class="item-container text-center">\n ' + 
 										'	<span style="font-weight: bold;">'+v.Source+'</span><br>\n ' + 
-										'	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank">'+v.Name+'</a></div>\n ' + 
+										'	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%">\n ' + 
+										'		<a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank">'+v.Name+'</a>\n ' + 
+										'	</div>\n ' + 
 										'	<span style="font-size: 1.5em;">'+numberWithCommas(String(v.Price))+'</span><br>\n ' + 
-										'	<a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank"><img style="max-width:100%;" src="assets/img/no-image.png" id="suggestions-preload-image_'+i+'"></a>\n ' + 
+										'	<div class="cropped-image-container">\n ' + 
+										'		<a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank">\n ' + 
+										'			<img class="cropped-image" style="max-width:100%;" src="assets/img/no-image.png" id="suggestions-preload-image_'+i+'" />\n ' + 
+										'		</a>\n ' + 
+										'	</div>\n ' + 
 										'</div>';
 							if (i<=4) {
 								suggestionsRow1Html += html;
@@ -143,7 +149,7 @@
 		<!-- ==========
 		POPULAR SECTION
 		=========== -->
-		<div class="row" id="popular-title"></div>
+		<div class="row" id="popular-title" style="padding-left:10px;"></div>
 		<div class="row" id="popular-row-1"></div>
 		<div class="row" id="popular-row-2"></div>
 		<script type="text/javascript">
@@ -158,11 +164,17 @@
 					$.each(data.hits.hits, function(i,e) {
 						var v = e._source;
 						var html = '<div class="item-container text-center">\n ' + 
-									'	<span style="font-weight: bold;">'+v.Source+'</span><br>\n ' + 
-									'	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank">'+v.Name+'</a></div>\n ' + 
-									'	<span style="font-size: 1.5em;">'+numberWithCommas(String(v.Price))+'</span><br>\n ' + 
-									'	<a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank"><img style="max-width:100%;" src="assets/img/no-image.png" id="popular-preload-image_'+i+'"></a>\n ' + 
-									'</div>';
+										'	<span style="font-weight: bold;">'+v.Source+'</span><br>\n ' + 
+										'	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%">\n ' + 
+										'		<a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank">'+v.Name+'</a>\n ' + 
+										'	</div>\n ' + 
+										'	<span style="font-size: 1.5em;">'+numberWithCommas(String(v.Price))+'</span><br>\n ' + 
+										'	<div class="cropped-image-container">\n ' + 
+										'		<a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank">\n ' + 
+										'			<img class="cropped-image" style="max-width:100%;" src="assets/img/no-image.png" id="popular-preload-image_'+i+'" />\n ' + 
+										'		</a>\n ' + 
+										'	</div>\n ' + 
+										'</div>';
 						if (i<=4) {
 							popularRow1Html += html;
 						} else if (i<=9) {
