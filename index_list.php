@@ -110,7 +110,7 @@ include_once 'inc/css.php';
 										<option value="">=== Kategori ===</option>
 										<?php
 
-										$sql = "SELECT category,subcategory,label FROM category WHERE is_deleted=0 ORDER BY category,subcategory ";
+										$sql = "SELECT category,subcategory,label FROM m_category WHERE is_deleted=0 ORDER BY category,subcategory ";
 										$result = $conn->query($sql);
 
 										
