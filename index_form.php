@@ -84,111 +84,107 @@
 
 
 
-		<div class="row"><hr><h3>SUGGESTIONS</h3></div>
+		<!-- ==============
+		SUGGESTIONS SECTION
+		=============== -->
+		<div class="row" id="suggestions-title"></div>
+		<div class="row" id="suggestions-row-1"></div>
+		<script type="text/javascript">
+			$.ajax({
+				url: '<?php echo API_SERVER_URI; ?>/api/search/list',
+				type: 'POST',
+				dataType: 'json',
+				success: function(data) {
+					$('#suggestions-title').html('<hr><h3>SUGGESTIONS</h3>');
+					var suggestionsRow1Html = '';
+					$.each(data.hits.hits, function(i,e) {
+						var v = e._source;
+						var html = '<div class="item-container text-center">\n ' + 
+									'	<span style="font-weight: bold;">'+v.Source+'</span><br>\n ' + 
+									'	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank">'+v.Name+'</a></div>\n ' + 
+									'	<span style="font-size: 1.5em;">'+numberWithCommas(String(v.Price))+'</span><br>\n ' + 
+									'	<a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank"><img style="max-width:100%;" src="assets/img/no-image.png" id="suggestions-preload-image_'+i+'"></a>\n ' + 
+									'</div>';
+						if (i<=4) {
+							suggestionsRow1Html += html;
+						}
 
-		<div class="row" id="result-row-1">
-			<div class="item-container text-center">
-			 	<span style="font-weight: bold;">Kaskus</span><br>
-			 	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a onmousedown="popularSave('http://fjb.kaskus.co.id/post/56aa87dcd89b09c8458b4572#post56aa87dcd89b09c8458b4572')" href="http://fjb.kaskus.co.id/post/56aa87dcd89b09c8458b4572#post56aa87dcd89b09c8458b4572" target="_blank">HP TERMURAH SEJAGAD RAYA!! surabaya sidoarjo . samsung iphone oppo asus</a></div>
-			 	<span style="font-size: 1.5em;">123</span><br>
-			 	<a onmousedown="popularSave('http://fjb.kaskus.co.id/post/56aa87dcd89b09c8458b4572#post56aa87dcd89b09c8458b4572')" href="http://fjb.kaskus.co.id/post/56aa87dcd89b09c8458b4572#post56aa87dcd89b09c8458b4572" target="_blank"><img style="max-width:100%;" src="assets/img/no-image.png" id="preload-image_0"></a>
-			</div>
-			<div class="item-container text-center">
-			 	<span style="font-weight: bold;">bukalapak</span><br>
-			 	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a onmousedown="popularSave('http://www.bukalapak.com/p/handphone/hp-smartphone/vddr4-jual-nokia-105-mulus-gan')" href="http://www.bukalapak.com/p/handphone/hp-smartphone/vddr4-jual-nokia-105-mulus-gan" target="_blank">nokia 105 mulus gan</a></div>
-			 	<span style="font-size: 1.5em;">200</span><br>
-			 	<a onmousedown="popularSave('http://www.bukalapak.com/p/handphone/hp-smartphone/vddr4-jual-nokia-105-mulus-gan')" href="http://www.bukalapak.com/p/handphone/hp-smartphone/vddr4-jual-nokia-105-mulus-gan" target="_blank"><img style="max-width:100%;" src="https://s2.bukalapak.com/img/1/4/3/4/9/0/3/5/2/medium/20160130_130856_scaled.jpg" id="preload-image_1"></a>
-			</div>
-			<div class="item-container text-center">
-			 	<span style="font-weight: bold;">bukalapak</span><br>
-			 	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a onmousedown="popularSave('http://www.bukalapak.com/p/handphone/hp-smartphone/vsyia-jual-lumia-625h-minus')" href="http://www.bukalapak.com/p/handphone/hp-smartphone/vsyia-jual-lumia-625h-minus" target="_blank">Lumia 625H Minus</a></div>
-			 	<span style="font-size: 1.5em;">400</span><br>
-			 	<a onmousedown="popularSave('http://www.bukalapak.com/p/handphone/hp-smartphone/vsyia-jual-lumia-625h-minus')" href="http://www.bukalapak.com/p/handphone/hp-smartphone/vsyia-jual-lumia-625h-minus" target="_blank"><img style="max-width:100%;" src="https://s4.bukalapak.com/img/1/4/5/3/0/9/9/5/4/medium/IMG_20160101_145036_HDR_scaled.jpg" id="preload-image_2"></a>
-			</div>
-			<div class="item-container text-center">
-			 	<span style="font-weight: bold;">bukalapak</span><br>
-			 	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a onmousedown="popularSave('http://www.bukalapak.com/p/handphone/hp-smartphone/uwubk-jual-bluboo-fire-x-2-3g-fingerpint-id-smartpone-metal-5-0-android-5-1-mtk6580-quad-core-1-2ghz-1gb-ram-8gb-rom-dual-camera-2-5d-screen')" href="http://www.bukalapak.com/p/handphone/hp-smartphone/uwubk-jual-bluboo-fire-x-2-3g-fingerpint-id-smartpone-metal-5-0-android-5-1-mtk6580-quad-core-1-2ghz-1gb-ram-8gb-rom-dual-camera-2-5d-screen" target="_blank">BLUBOO FIRE X 2 3G FINGERPINT ID Smartpone Metal 5.0" Android 5.1 MTK6580 Quad Core 1.2GHz 1GB RAM 8GB ROM Dual Camera 2.5D Screen</a></div>
-			 	<span style="font-size: 1.5em;">500</span><br>
-			 	<a onmousedown="popularSave('http://www.bukalapak.com/p/handphone/hp-smartphone/uwubk-jual-bluboo-fire-x-2-3g-fingerpint-id-smartpone-metal-5-0-android-5-1-mtk6580-quad-core-1-2ghz-1gb-ram-8gb-rom-dual-camera-2-5d-screen')" href="http://www.bukalapak.com/p/handphone/hp-smartphone/uwubk-jual-bluboo-fire-x-2-3g-fingerpint-id-smartpone-metal-5-0-android-5-1-mtk6580-quad-core-1-2ghz-1gb-ram-8gb-rom-dual-camera-2-5d-screen" target="_blank"><img style="max-width:100%;" src="https://s3.bukalapak.com/img/1/4/2/1/7/5/5/2/8/medium/IMG_20160128_201224.JPG" id="preload-image_3"></a>
-			</div>
-			<div class="item-container text-center">
-			 	<span style="font-weight: bold;">bukalapak</span><br>
-			 	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a onmousedown="popularSave('http://www.bukalapak.com/p/handphone/hp-smartphone/vgnls-jual-lenovo-a369i')" href="http://www.bukalapak.com/p/handphone/hp-smartphone/vgnls-jual-lenovo-a369i" target="_blank">LENOVO a369i</a></div>
-			 	<span style="font-size: 1.5em;">500</span><br>
-				<a onmousedown="popularSave('http://www.bukalapak.com/p/handphone/hp-smartphone/vgnls-jual-lenovo-a369i')" href="http://www.bukalapak.com/p/handphone/hp-smartphone/vgnls-jual-lenovo-a369i" target="_blank"><img style="max-width:100%;" src="https://www.bukalapak.com/img/1/4/3/8/8/3/5/4/4/medium/20160131_165513_scaled.jpg" id="preload-image_4"></a>
-			</div>
-		</div>
+						var img = new Image();
+						img.onload = function () {
+						   $('#suggestions-preload-image_'+i).attr('src',v.ImageUri);
+						}
+						img.src = v.ImageUri;
+					});
+					$('#suggestions-row-1').html(suggestionsRow1Html);
+				}.bind(this),
+				error: function(xhr, status, err) {
+					// EMPTY
+				}.bind(this),
+				data: JSON.stringify({
+					Id: id,
+					Token: token,
+					LoginType: 'fb',
+					Size: '5'
+				})
+			});
+		</script>
 
 
 
-		<div class="row"><hr><h3>POPULAR</h3></div>
+		<!-- ==========
+		POPULAR SECTION
+		=========== -->
+		<div class="row" id="popular-title"></div>
+		<div class="row" id="popular-row-1"></div>
+		<div class="row" id="popular-row-2"></div>
+		<script type="text/javascript">
+			$.ajax({
+				url: '<?php echo API_SERVER_URI; ?>/api/search/list',
+				type: 'POST',
+				dataType: 'json',
+				success: function(data) {
+					$('#popular-title').html('<hr><h3>POPULAR</h3>');
+					var popularRow1Html = '';
+					var popularRow2Html = '';
+					$.each(data.hits.hits, function(i,e) {
+						var v = e._source;
+						var html = '<div class="item-container text-center">\n ' + 
+									'	<span style="font-weight: bold;">'+v.Source+'</span><br>\n ' + 
+									'	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank">'+v.Name+'</a></div>\n ' + 
+									'	<span style="font-size: 1.5em;">'+numberWithCommas(String(v.Price))+'</span><br>\n ' + 
+									'	<a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank"><img style="max-width:100%;" src="assets/img/no-image.png" id="popular-preload-image_'+i+'"></a>\n ' + 
+									'</div>';
+						if (i<=4) {
+							popularRow1Html += html;
+						} else if (i<=9) {
+							popularRow2Html += html;
+						};
 
-		<div class="row" id="result-row-1">
-			<div class="item-container text-center">
-			 	<span style="font-weight: bold;">Kaskus</span><br>
-			 	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a onmousedown="popularSave('http://fjb.kaskus.co.id/post/56aa87dcd89b09c8458b4572#post56aa87dcd89b09c8458b4572')" href="http://fjb.kaskus.co.id/post/56aa87dcd89b09c8458b4572#post56aa87dcd89b09c8458b4572" target="_blank">HP TERMURAH SEJAGAD RAYA!! surabaya sidoarjo . samsung iphone oppo asus</a></div>
-			 	<span style="font-size: 1.5em;">123</span><br>
-			 	<a onmousedown="popularSave('http://fjb.kaskus.co.id/post/56aa87dcd89b09c8458b4572#post56aa87dcd89b09c8458b4572')" href="http://fjb.kaskus.co.id/post/56aa87dcd89b09c8458b4572#post56aa87dcd89b09c8458b4572" target="_blank"><img style="max-width:100%;" src="assets/img/no-image.png" id="preload-image_0"></a>
-			</div>
-			<div class="item-container text-center">
-			 	<span style="font-weight: bold;">bukalapak</span><br>
-			 	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a onmousedown="popularSave('http://www.bukalapak.com/p/handphone/hp-smartphone/vddr4-jual-nokia-105-mulus-gan')" href="http://www.bukalapak.com/p/handphone/hp-smartphone/vddr4-jual-nokia-105-mulus-gan" target="_blank">nokia 105 mulus gan</a></div>
-			 	<span style="font-size: 1.5em;">200</span><br>
-			 	<a onmousedown="popularSave('http://www.bukalapak.com/p/handphone/hp-smartphone/vddr4-jual-nokia-105-mulus-gan')" href="http://www.bukalapak.com/p/handphone/hp-smartphone/vddr4-jual-nokia-105-mulus-gan" target="_blank"><img style="max-width:100%;" src="https://s2.bukalapak.com/img/1/4/3/4/9/0/3/5/2/medium/20160130_130856_scaled.jpg" id="preload-image_1"></a>
-			</div>
-			<div class="item-container text-center">
-			 	<span style="font-weight: bold;">bukalapak</span><br>
-			 	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a onmousedown="popularSave('http://www.bukalapak.com/p/handphone/hp-smartphone/vsyia-jual-lumia-625h-minus')" href="http://www.bukalapak.com/p/handphone/hp-smartphone/vsyia-jual-lumia-625h-minus" target="_blank">Lumia 625H Minus</a></div>
-			 	<span style="font-size: 1.5em;">400</span><br>
-			 	<a onmousedown="popularSave('http://www.bukalapak.com/p/handphone/hp-smartphone/vsyia-jual-lumia-625h-minus')" href="http://www.bukalapak.com/p/handphone/hp-smartphone/vsyia-jual-lumia-625h-minus" target="_blank"><img style="max-width:100%;" src="https://s4.bukalapak.com/img/1/4/5/3/0/9/9/5/4/medium/IMG_20160101_145036_HDR_scaled.jpg" id="preload-image_2"></a>
-			</div>
-			<div class="item-container text-center">
-			 	<span style="font-weight: bold;">bukalapak</span><br>
-			 	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a onmousedown="popularSave('http://www.bukalapak.com/p/handphone/hp-smartphone/uwubk-jual-bluboo-fire-x-2-3g-fingerpint-id-smartpone-metal-5-0-android-5-1-mtk6580-quad-core-1-2ghz-1gb-ram-8gb-rom-dual-camera-2-5d-screen')" href="http://www.bukalapak.com/p/handphone/hp-smartphone/uwubk-jual-bluboo-fire-x-2-3g-fingerpint-id-smartpone-metal-5-0-android-5-1-mtk6580-quad-core-1-2ghz-1gb-ram-8gb-rom-dual-camera-2-5d-screen" target="_blank">BLUBOO FIRE X 2 3G FINGERPINT ID Smartpone Metal 5.0" Android 5.1 MTK6580 Quad Core 1.2GHz 1GB RAM 8GB ROM Dual Camera 2.5D Screen</a></div>
-			 	<span style="font-size: 1.5em;">500</span><br>
-			 	<a onmousedown="popularSave('http://www.bukalapak.com/p/handphone/hp-smartphone/uwubk-jual-bluboo-fire-x-2-3g-fingerpint-id-smartpone-metal-5-0-android-5-1-mtk6580-quad-core-1-2ghz-1gb-ram-8gb-rom-dual-camera-2-5d-screen')" href="http://www.bukalapak.com/p/handphone/hp-smartphone/uwubk-jual-bluboo-fire-x-2-3g-fingerpint-id-smartpone-metal-5-0-android-5-1-mtk6580-quad-core-1-2ghz-1gb-ram-8gb-rom-dual-camera-2-5d-screen" target="_blank"><img style="max-width:100%;" src="https://s3.bukalapak.com/img/1/4/2/1/7/5/5/2/8/medium/IMG_20160128_201224.JPG" id="preload-image_3"></a>
-			</div>
-			<div class="item-container text-center">
-			 	<span style="font-weight: bold;">bukalapak</span><br>
-			 	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a onmousedown="popularSave('http://www.bukalapak.com/p/handphone/hp-smartphone/vgnls-jual-lenovo-a369i')" href="http://www.bukalapak.com/p/handphone/hp-smartphone/vgnls-jual-lenovo-a369i" target="_blank">LENOVO a369i</a></div>
-			 	<span style="font-size: 1.5em;">500</span><br>
-				<a onmousedown="popularSave('http://www.bukalapak.com/p/handphone/hp-smartphone/vgnls-jual-lenovo-a369i')" href="http://www.bukalapak.com/p/handphone/hp-smartphone/vgnls-jual-lenovo-a369i" target="_blank"><img style="max-width:100%;" src="https://www.bukalapak.com/img/1/4/3/8/8/3/5/4/4/medium/20160131_165513_scaled.jpg" id="preload-image_4"></a>
-			</div>
-		</div>
-
-		<div class="row" id="result-row-1">
-			<div class="item-container text-center">
-			 	<span style="font-weight: bold;">Kaskus</span><br>
-			 	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a onmousedown="popularSave('http://fjb.kaskus.co.id/post/56aa87dcd89b09c8458b4572#post56aa87dcd89b09c8458b4572')" href="http://fjb.kaskus.co.id/post/56aa87dcd89b09c8458b4572#post56aa87dcd89b09c8458b4572" target="_blank">HP TERMURAH SEJAGAD RAYA!! surabaya sidoarjo . samsung iphone oppo asus</a></div>
-			 	<span style="font-size: 1.5em;">123</span><br>
-			 	<a onmousedown="popularSave('http://fjb.kaskus.co.id/post/56aa87dcd89b09c8458b4572#post56aa87dcd89b09c8458b4572')" href="http://fjb.kaskus.co.id/post/56aa87dcd89b09c8458b4572#post56aa87dcd89b09c8458b4572" target="_blank"><img style="max-width:100%;" src="assets/img/no-image.png" id="preload-image_0"></a>
-			</div>
-			<div class="item-container text-center">
-			 	<span style="font-weight: bold;">bukalapak</span><br>
-			 	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a onmousedown="popularSave('http://www.bukalapak.com/p/handphone/hp-smartphone/vddr4-jual-nokia-105-mulus-gan')" href="http://www.bukalapak.com/p/handphone/hp-smartphone/vddr4-jual-nokia-105-mulus-gan" target="_blank">nokia 105 mulus gan</a></div>
-			 	<span style="font-size: 1.5em;">200</span><br>
-			 	<a onmousedown="popularSave('http://www.bukalapak.com/p/handphone/hp-smartphone/vddr4-jual-nokia-105-mulus-gan')" href="http://www.bukalapak.com/p/handphone/hp-smartphone/vddr4-jual-nokia-105-mulus-gan" target="_blank"><img style="max-width:100%;" src="https://s2.bukalapak.com/img/1/4/3/4/9/0/3/5/2/medium/20160130_130856_scaled.jpg" id="preload-image_1"></a>
-			</div>
-			<div class="item-container text-center">
-			 	<span style="font-weight: bold;">bukalapak</span><br>
-			 	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a onmousedown="popularSave('http://www.bukalapak.com/p/handphone/hp-smartphone/vsyia-jual-lumia-625h-minus')" href="http://www.bukalapak.com/p/handphone/hp-smartphone/vsyia-jual-lumia-625h-minus" target="_blank">Lumia 625H Minus</a></div>
-			 	<span style="font-size: 1.5em;">400</span><br>
-			 	<a onmousedown="popularSave('http://www.bukalapak.com/p/handphone/hp-smartphone/vsyia-jual-lumia-625h-minus')" href="http://www.bukalapak.com/p/handphone/hp-smartphone/vsyia-jual-lumia-625h-minus" target="_blank"><img style="max-width:100%;" src="https://s4.bukalapak.com/img/1/4/5/3/0/9/9/5/4/medium/IMG_20160101_145036_HDR_scaled.jpg" id="preload-image_2"></a>
-			</div>
-			<div class="item-container text-center">
-			 	<span style="font-weight: bold;">bukalapak</span><br>
-			 	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a onmousedown="popularSave('http://www.bukalapak.com/p/handphone/hp-smartphone/uwubk-jual-bluboo-fire-x-2-3g-fingerpint-id-smartpone-metal-5-0-android-5-1-mtk6580-quad-core-1-2ghz-1gb-ram-8gb-rom-dual-camera-2-5d-screen')" href="http://www.bukalapak.com/p/handphone/hp-smartphone/uwubk-jual-bluboo-fire-x-2-3g-fingerpint-id-smartpone-metal-5-0-android-5-1-mtk6580-quad-core-1-2ghz-1gb-ram-8gb-rom-dual-camera-2-5d-screen" target="_blank">BLUBOO FIRE X 2 3G FINGERPINT ID Smartpone Metal 5.0" Android 5.1 MTK6580 Quad Core 1.2GHz 1GB RAM 8GB ROM Dual Camera 2.5D Screen</a></div>
-			 	<span style="font-size: 1.5em;">500</span><br>
-			 	<a onmousedown="popularSave('http://www.bukalapak.com/p/handphone/hp-smartphone/uwubk-jual-bluboo-fire-x-2-3g-fingerpint-id-smartpone-metal-5-0-android-5-1-mtk6580-quad-core-1-2ghz-1gb-ram-8gb-rom-dual-camera-2-5d-screen')" href="http://www.bukalapak.com/p/handphone/hp-smartphone/uwubk-jual-bluboo-fire-x-2-3g-fingerpint-id-smartpone-metal-5-0-android-5-1-mtk6580-quad-core-1-2ghz-1gb-ram-8gb-rom-dual-camera-2-5d-screen" target="_blank"><img style="max-width:100%;" src="https://s3.bukalapak.com/img/1/4/2/1/7/5/5/2/8/medium/IMG_20160128_201224.JPG" id="preload-image_3"></a>
-			</div>
-			<div class="item-container text-center">
-			 	<span style="font-weight: bold;">bukalapak</span><br>
-			 	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%"><a onmousedown="popularSave('http://www.bukalapak.com/p/handphone/hp-smartphone/vgnls-jual-lenovo-a369i')" href="http://www.bukalapak.com/p/handphone/hp-smartphone/vgnls-jual-lenovo-a369i" target="_blank">LENOVO a369i</a></div>
-			 	<span style="font-size: 1.5em;">500</span><br>
-				<a onmousedown="popularSave('http://www.bukalapak.com/p/handphone/hp-smartphone/vgnls-jual-lenovo-a369i')" href="http://www.bukalapak.com/p/handphone/hp-smartphone/vgnls-jual-lenovo-a369i" target="_blank"><img style="max-width:100%;" src="https://www.bukalapak.com/img/1/4/3/8/8/3/5/4/4/medium/20160131_165513_scaled.jpg" id="preload-image_4"></a>
-			</div>
-		</div>
+						var img = new Image();
+						img.onload = function () {
+						   $('#popular-preload-image_'+i).attr('src',v.ImageUri);
+						}
+						img.src = v.ImageUri;
+					});
+					$('#popular-row-1').html(popularRow1Html);
+					$('#popular-row-2').html(popularRow2Html);
+				}.bind(this),
+				error: function(xhr, status, err) {
+					// EMPTY
+				}.bind(this),
+				data: JSON.stringify({
+					Id: id,
+					Token: token,
+					LoginType: 'fb',
+					Size: '10'
+				})
+			});
+		</script>
 	</div>
+
+	<?php
+	include_once 'inc/js_below.php';
+	?>
 
 	<script type="text/javascript">
 		$('#form').submit(function() {

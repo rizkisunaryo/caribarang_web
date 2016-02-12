@@ -135,24 +135,11 @@ include_once 'inc/css.php';
 	</div>
 </div>
 
-<script type="text/javascript">
-	function popularSave(uri) {
-		$.ajax({
-			url: '<?php echo API_SERVER_URI; ?>/api/popular/save',
-			type: 'POST',
-			dataType: 'json',
-			success: function(data) {
-				// EMPTY
-			}.bind(this),
-			error: function(xhr, status, err) {
-				// EMPTY
-			}.bind(this),
-			data: JSON.stringify({
-				Uri: uri
-			})
-		});
-	}
+<?php
+include_once 'inc/js_below.php';
+?>
 
+<script type="text/javascript">
 	$.ajax({
 		url: '<?php echo API_SERVER_URI; ?>/api/search/list',
 		type: 'POST',
