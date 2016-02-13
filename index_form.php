@@ -2,6 +2,7 @@
 	include_once 'inc/js_above.php';
 	include_once 'inc/js_fb.php';
 	include_once 'inc/css.php';
+	include_once 'inc/db.php';
 ?>
 	<style type="text/css">
 		@media all and (min-width: 768px) {
@@ -69,7 +70,7 @@
 
 					    <?php
 					    }						
-						$conn->close();
+						// $conn->close();
 
 						?>
 					</select><br />
@@ -149,57 +150,109 @@
 		<!-- ==========
 		POPULAR SECTION
 		=========== -->
-		<div class="row" id="popular-title" style="padding-left:10px;"></div>
-		<div class="row" id="popular-row-1"></div>
-		<div class="row" id="popular-row-2"></div>
-		<script type="text/javascript">
-			$.ajax({
-				url: '<?php echo API_SERVER_URI; ?>/api/search/list',
-				type: 'POST',
-				dataType: 'json',
-				success: function(data) {
-					$('#popular-title').html('<hr><h3>POPULAR</h3>');
-					var popularRow1Html = '';
-					var popularRow2Html = '';
-					$.each(data.hits.hits, function(i,e) {
-						var v = e._source;
-						var html = '<div class="item-container text-center">\n ' + 
-										'	<span style="font-weight: bold;">'+v.Source+'</span><br>\n ' + 
-										'	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%">\n ' + 
-										'		<a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank">'+v.Name+'</a>\n ' + 
-										'	</div>\n ' + 
-										'	<span style="font-size: 1.5em;">'+numberWithCommas(String(v.Price))+'</span><br>\n ' + 
-										'	<div class="cropped-image-container">\n ' + 
-										'		<a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank">\n ' + 
-										'			<img class="cropped-image" style="max-width:100%;" src="assets/img/no-image.png" id="popular-preload-image_'+i+'" />\n ' + 
-										'		</a>\n ' + 
-										'	</div>\n ' + 
-										'</div>';
-						if (i<=4) {
-							popularRow1Html += html;
-						} else if (i<=9) {
-							popularRow2Html += html;
-						};
+		<?php
 
+		$sql = "SELECT name,uri,image_uri,price,source FROM popular ORDER BY click_count DESC LIMIT 0,10 ";
+		$result = $conn->query($sql);
+
+		$i = 0;
+	    while($row = $result->fetch_assoc()) {
+	    	if ($i==0) {
+	    	?>
+	    		<div class="row" id="popular-title" style="padding-left:10px;"><hr><h3>POPULAR</h3></div>
+	    	<?php
+	    	}
+	    	if ($i==0 || $i==5) {
+	    	?>
+	    		<div class="row">
+	    	<?php
+	    	}
+	    	?>
+	    			<div class="item-container text-center">
+						<span style="font-weight: bold;"><?php echo $row['source']; ?></span><br>
+						<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%">
+							<a onmousedown="popularSave('<?php echo $row['uri']; ?>')" href="<?php echo $row['uri']; ?>" target="_blank"><?php echo $row['name']; ?></a>
+						</div>
+						<span style="font-size: 1.5em;">
+							<script type="text/javascript">
+								document.write(numberWithCommas('<?php echo $row['price']; ?>'));
+							</script>
+						</span><br>
+						<div class="cropped-image-container">
+							<a onmousedown="popularSave('<?php echo $row['uri']; ?>')" href="<?php echo $row['uri']; ?>" target="_blank">
+								<img class="cropped-image" style="max-width:100%;" src="assets/img/no-image.png" id="popular-preload-image_<?php echo $i; ?>" />
+							</a>
+						</div>
+					</div>
+					<script type="text/javascript">
 						var img = new Image();
 						img.onload = function () {
-						   $('#popular-preload-image_'+i).attr('src',v.ImageUri);
+						   $('#popular-preload-image_<?php echo $i; ?>').attr('src','<?php echo $row['image_uri'] ?>');
 						}
-						img.src = v.ImageUri;
-					});
-					$('#popular-row-1').html(popularRow1Html);
-					$('#popular-row-2').html(popularRow2Html);
-				}.bind(this),
-				error: function(xhr, status, err) {
-					// EMPTY
-				}.bind(this),
-				data: JSON.stringify({
-					Id: id,
-					Token: token,
-					LoginType: 'fb',
-					Size: '10'
-				})
-			});
+						img.src = '<?php echo $row['image_uri'] ?>';
+					</script>
+	    	<?php
+	    	if ($i==4 || $i==9) {
+	    	?>
+	    		</div>
+	    	<?php
+	    	}
+	    	$i++;
+	    }
+	    $conn->close();
+
+		?>
+		<!-- <div class="row" id="popular-title" style="padding-left:10px;"></div>
+		<div class="row" id="popular-row-1"></div>
+		<div class="row" id="popular-row-2"></div> -->
+		<script type="text/javascript">
+			// $.ajax({
+			// 	url: '<?php echo API_SERVER_URI; ?>/api/search/list',
+			// 	type: 'POST',
+			// 	dataType: 'json',
+			// 	success: function(data) {
+			// 		$('#popular-title').html('<hr><h3>POPULAR</h3>');
+			// 		var popularRow1Html = '';
+			// 		var popularRow2Html = '';
+			// 		$.each(data.hits.hits, function(i,e) {
+			// 			var v = e._source;
+			// 			var html = '<div class="item-container text-center">\n ' + 
+			// 							'	<span style="font-weight: bold;">'+v.Source+'</span><br>\n ' + 
+			// 							'	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%">\n ' + 
+			// 							'		<a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank">'+v.Name+'</a>\n ' + 
+			// 							'	</div>\n ' + 
+			// 							'	<span style="font-size: 1.5em;">'+numberWithCommas(String(v.Price))+'</span><br>\n ' + 
+			// 							'	<div class="cropped-image-container">\n ' + 
+			// 							'		<a onmousedown="popularSave(\''+v.Uri+'\')" href="'+v.Uri+'" target="_blank">\n ' + 
+			// 							'			<img class="cropped-image" style="max-width:100%;" src="assets/img/no-image.png" id="popular-preload-image_'+i+'" />\n ' + 
+			// 							'		</a>\n ' + 
+			// 							'	</div>\n ' + 
+			// 							'</div>';
+			// 			if (i<=4) {
+			// 				popularRow1Html += html;
+			// 			} else if (i<=9) {
+			// 				popularRow2Html += html;
+			// 			};
+
+			// 			var img = new Image();
+			// 			img.onload = function () {
+			// 			   $('#popular-preload-image_'+i).attr('src',v.ImageUri);
+			// 			}
+			// 			img.src = v.ImageUri;
+			// 		});
+			// 		$('#popular-row-1').html(popularRow1Html);
+			// 		$('#popular-row-2').html(popularRow2Html);
+			// 	}.bind(this),
+			// 	error: function(xhr, status, err) {
+			// 		// EMPTY
+			// 	}.bind(this),
+			// 	data: JSON.stringify({
+			// 		Id: id,
+			// 		Token: token,
+			// 		LoginType: 'fb',
+			// 		Size: '10'
+			// 	})
+			// });
 		</script>
 	</div>
 
