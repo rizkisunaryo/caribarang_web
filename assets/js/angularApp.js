@@ -73,11 +73,13 @@ app.factory('master', [
 
 		o.getCategories = function() {
 			o.categories = [{
-				value: 'hp',
-				label: 'HP'
+				Category: 'hp',
+				CategoryOrder: 0,
+				Label: 'Semua handphone'
 			}, {
-				value: 'test',
-				label: 'Test'
+				Category: 'test',
+				CategoryOrder: 10,
+				Label: 'Semua test'
 			}];
 		}
 
@@ -137,9 +139,6 @@ app.directive('validNumber', function() {
 			element.bind('keypress', function(evt) {
 				var charCode = (evt.which) ? evt.which : evt.keyCode;
 				return !(charCode > 31 && (charCode < 48 || charCode > 57));
-				// if (event.keyCode === 32) {
-				// 	event.preventDefault();
-				// }
 			});
 		}
 	};
