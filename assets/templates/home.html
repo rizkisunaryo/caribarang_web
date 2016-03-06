@@ -39,8 +39,8 @@
 					<option ng-repeat="category in categories | orderBy:'-label'" value="{{category.value}}">{{category.label}}</option>
 				</select><br />
 				<input type="text" class="form-control" id="form_keyword" name="form_keyword" placeholder="Kata kunci"><br />
-				<input type="tel" class="form-control" id="form_min-price" name="form_min-price" placeholder="Harga minimum" onkeypress="return isNumberKey(event);" onkeyup="this.value=numberWithCommas(this.value);"><br />
-				<input type="tel" class="form-control" id="form_max-price" name="form_max-price" placeholder="Harga maximum" onkeypress="return isNumberKey(event);" onkeyup="this.value=numberWithCommas(this.value);"><br />
+				<input type="tel" class="form-control" ng-model="minPrice" placeholder="Harga minimum" valid-number><br />
+				<!-- <input type="tel" class="form-control" id="form_max-price" name="form_max-price" placeholder="Harga maximum" onkeypress="return isNumberKey(event);" onkeyup="this.value=numberWithCommas(this.value);"><br /> -->
 				<button type="submit" class="btn btn-default">C A R I</button>
 			</form>
 		</div>

@@ -11,10 +11,10 @@ app.config([
 				templateUrl: 'assets/templates/home.html',
 				controller: 'MainCtrl',
 				resolve: {
-                    postPromise: ['master', function(master) {
-                        return master.getCategories();
-                    }]
-                }
+					postPromise: ['master', function(master) {
+						return master.getCategories();
+					}]
+				}
 			})
 			.state('test', {
 				url: '/test/{id}',
@@ -89,10 +89,10 @@ app.controller('MainCtrl', [
 	'$scope',
 	'$window',
 	'master',
-	function($scope,$window,master) {
-		$window.location.href = '#/test/1/';
-		$scope.test = 'Hello world!';
-		$scope.categories = master.categories
+	'helper',
+	function($scope, $window, master, helper) {
+		$scope.categories = master.categories;
+		$scope.onlyNumbers = /^\d+$/;
 	}
 ]);
 
@@ -112,3 +112,35 @@ app.controller('TestLagiCtrl', [
 		$scope.lagiId = $stateParams.lagiId;
 	}
 ]);
+
+app.directive('validNumber', function() {
+	return {
+		require: '?ngModel',
+		link: function(scope, element, attrs, ngModelCtrl) {
+			if (!ngModelCtrl) {
+				return;
+			}
+
+			ngModelCtrl.$parsers.push(function(x) {
+				retVal = x ? parseFloat(x.replace(/,/g, '')) : 0;
+				if (retVal == 0) return '';
+
+				//apply formatting
+				var theRet = retVal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+				if (x !== theRet) {
+					ngModelCtrl.$setViewValue(theRet);
+					ngModelCtrl.$render();
+				}
+				return theRet;
+			});
+
+			element.bind('keypress', function(evt) {
+				var charCode = (evt.which) ? evt.which : evt.keyCode;
+				return !(charCode > 31 && (charCode < 48 || charCode > 57));
+				// if (event.keyCode === 32) {
+				// 	event.preventDefault();
+				// }
+			});
+		}
+	};
+});
