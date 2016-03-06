@@ -1,0 +1,49 @@
+<style type="text/css">
+	@media all and (min-width: 768px) {
+		div.item-container {
+			width: 18.7%;
+		}
+	}
+</style>
+
+<div class="container">
+	<div class="jumbotron">
+		<h1>CariBarang</h1>
+		<p style="color:blue;">Mau belanja online? Cari aja di sini!</p>
+	</div>
+
+	<div class="row text-right" style="margin-right:5px; margin-bottom:20px;">
+		<div id="fb-login-div" style="display:none;">
+			<div id="fb-root"></div>
+			<div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="false" onlogin="checkLoginState();"></div>
+		</div>
+		<div id="user-drop-down" style="margin-top:-9px; cursor:pointer; float:right; display:none;">
+			<ul class="nav nav-pills left">
+				<li class="dropdown active span8">
+					<a class="dropdown-toggle" id="inp_impact" data-toggle="dropdown">
+						<span id="user-full-name"></span>&nbsp;<span class="caret"></span>
+					</a>
+					<ul ID="divNewNotifications" class="dropdown-menu" style="cursor:pointer;">
+						<li><a onclick="logoutFB();">Log Out</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-3"></div>
+		<div class="col-sm-6">
+			<form role="form" method="GET" id="form">
+				<select class="form-control" id="form_category" name="form_category">
+					<option ng-repeat="category in categories | orderBy:'-label'" value="{{category.value}}">{{category.label}}</option>
+				</select><br />
+				<input type="text" class="form-control" id="form_keyword" name="form_keyword" placeholder="Kata kunci"><br />
+				<input type="tel" class="form-control" id="form_min-price" name="form_min-price" placeholder="Harga minimum" onkeypress="return isNumberKey(event);" onkeyup="this.value=numberWithCommas(this.value);"><br />
+				<input type="tel" class="form-control" id="form_max-price" name="form_max-price" placeholder="Harga maximum" onkeypress="return isNumberKey(event);" onkeyup="this.value=numberWithCommas(this.value);"><br />
+				<button type="submit" class="btn btn-default">C A R I</button>
+			</form>
+		</div>
+		<div class="col-sm-3"></div>
+	</div>
+</div>

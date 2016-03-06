@@ -51,7 +51,7 @@
 						<option value="">=== Kategori ===</option>
 						<?php
 
-						$sql = "SELECT category,subcategory,label FROM m_category WHERE is_deleted=0 ORDER BY category,subcategory ";
+						$sql = "SELECT category,subcategory,label FROM m_category WHERE is_deleted=0 ORDER BY category_order,subcategory_order ";
 						$result = $conn->query($sql);
 
 						
