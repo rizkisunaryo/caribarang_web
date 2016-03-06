@@ -3,7 +3,8 @@ var app = angular.module('cariBarang', ['ui.router'])
 app.config([
 	'$stateProvider',
 	'$urlRouterProvider',
-	function($stateProvider, $urlRouterProvider) {
+	'$httpProvider',
+	function($stateProvider, $urlRouterProvider, $httpProvider) {
 
 		$stateProvider
 			.state('home', {
@@ -38,30 +39,18 @@ app.config([
 			});
 
 		$urlRouterProvider.otherwise('home');
+
+
+
+		$httpProvider.defaults.useXDomain = true;
+        delete $httpProvider.defaults.headers.common['X-Requested-With'];
 	}
 ]);
 
-app.factory('helper', [
-	function() {
-
-		var o = {};
-
-		o.isNumberKey = function(evt) {
-			var charCode = (evt.which) ? evt.which : evt.keyCode
-			return !(charCode > 31 && (charCode < 48 || charCode > 57));
-		}
-
-		o.numberWithCommas = function(x) {
-			//remove commas
-			retVal = x ? parseFloat(x.replace(/,/g, '')) : 0;
-			if (retVal == 0) return '';
-
-			//apply formatting
-			return retVal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		}
-
-		return o;
-	}
+app.config(['$httpProvider', function($httpProvider) {
+        $httpProvider.defaults.useXDomain = true;
+        delete $httpProvider.defaults.headers.common['X-Requested-With'];
+    }
 ]);
 
 app.factory('master', [
@@ -87,14 +76,51 @@ app.factory('master', [
 	}
 ]);
 
+app.factory('suggestions', [
+	'$http',
+	function($http) {
+
+		var o = {
+			suggestions: []
+		};
+
+		o.getSuggestions = function(credential) {
+			console.log(JSON.stringify(credential));
+			$http.post(API_SERVER_URI+'/api/suggestions/list', credential, {headers: {'Content-Type': 'application/json'}}).success(function(data){
+    // o.suggestions.push(data);
+    angular.copy(data.hits.hits, o.suggestions);
+    console.log(o.suggestions);
+  });
+
+			// $http({
+   //          url: API_SERVER_URI+'/api/suggestions/list',
+   //          method: "POST",
+   //          data: credential,
+   //          headers: {
+   //                'access-control-allow-origin': '*'
+   //     },
+   //      }).success(function (data, status, headers, config) {
+   //              angular.copy(data.hits.hits, o.suggestions);
+   //          }).error(function (data, status, headers, config) {
+   //              // $scope.status = status + ' ' + headers;
+   //          });
+
+		}
+
+		return o;
+	}
+]);
+
 app.controller('MainCtrl', [
 	'$scope',
 	'$window',
 	'master',
-	'helper',
-	function($scope, $window, master, helper) {
+	'suggestions',
+	function($scope, $window, master, suggestions) {
 		$scope.categories = master.categories;
-		$scope.onlyNumbers = /^\d+$/;
+		$scope.getSuggestions = function(credential) {
+			suggestions.getSuggestions(credential);
+		}
 	}
 ]);
 
@@ -114,32 +140,3 @@ app.controller('TestLagiCtrl', [
 		$scope.lagiId = $stateParams.lagiId;
 	}
 ]);
-
-app.directive('validNumber', function() {
-	return {
-		require: '?ngModel',
-		link: function(scope, element, attrs, ngModelCtrl) {
-			if (!ngModelCtrl) {
-				return;
-			}
-
-			ngModelCtrl.$parsers.push(function(x) {
-				retVal = x ? parseFloat(x.replace(/,/g, '')) : 0;
-				if (retVal == 0) return '';
-
-				//apply formatting
-				var theRet = retVal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-				if (x !== theRet) {
-					ngModelCtrl.$setViewValue(theRet);
-					ngModelCtrl.$render();
-				}
-				return theRet;
-			});
-
-			element.bind('keypress', function(evt) {
-				var charCode = (evt.which) ? evt.which : evt.keyCode;
-				return !(charCode > 31 && (charCode < 48 || charCode > 57));
-			});
-		}
-	};
-});

@@ -1,3 +1,5 @@
+<div style="display:none;" id="angularBridge" ng-controller="MainCtrl"></div>
+
 <style type="text/css">
 	@media all and (min-width: 768px) {
 		div.item-container {
@@ -39,11 +41,80 @@
 					<option ng-repeat="category in categories | orderBy:'-CategoryOrder'" value="{{category.Category}}">{{category.Label}}</option>
 				</select><br />
 				<input type="text" class="form-control" id="form_keyword" name="form_keyword" placeholder="Kata kunci"><br />
-				<input type="tel" class="form-control" ng-model="minPrice" placeholder="Harga minimum" valid-number><br />
-				<input type="tel" class="form-control" ng-model="maxPrice" placeholder="Harga maximum" valid-number><br />
+				<input type="tel" class="form-control" ng-model="minPrice" placeholder="Harga minimum" onkeypress="return isNumberKey(event);" onkeyup="this.value=numberWithCommas(this.value);"><br />
+				<input type="tel" class="form-control" ng-model="maxPrice" placeholder="Harga maximum" onkeypress="return isNumberKey(event);" onkeyup="this.value=numberWithCommas(this.value);"><br />
 				<button type="submit" class="btn btn-default">C A R I</button>
 			</form>
 		</div>
 		<div class="col-sm-3"></div>
 	</div>
+
+	<!-- ==============
+	SUGGESTIONS SECTION
+	=============== -->
+	<div class="row" id="suggestions-title" style="padding-left:10px;"></div>
+	<div class="row" id="suggestions-row-1"></div>
+	<script type="text/javascript">
+		function fbLoginSuccessCallback() {
+			angular.element(document.getElementById('angularBridge')).scope().getSuggestions({
+					Id: id,
+					Token: token,
+					LoginType: 'fb',
+					Size: '5'
+				});
+			// $.ajax({
+			// 	url: API_SERVER_URI + '/api/suggestions/list',
+			// 	type: 'POST',
+			// 	dataType: 'json',
+			// 	success: function(data) {
+			// 		if (typeof data.Message !== 'undefined' && data.Message != null && data.Message != "") {
+			// 			return;
+			// 		};
+			// 		if (data.hits.hits.length < 1) {
+			// 			return;
+			// 		};
+
+			// 		$('#suggestions-title').html('<hr><h3>SUGGESTIONS</h3>');
+			// 		var suggestionsRow1Html = '';
+			// 		$.each(data.hits.hits, function(i, e) {
+			// 			var v = e._source;
+			// 			var html = '<div class="item-container text-center">\n ' +
+			// 				'	<span style="font-weight: bold;">' + v.Source + '</span><br>\n ' +
+			// 				'	<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%">\n ' +
+			// 				'		<a onmousedown="popularSave(\'' + v.Uri + '\')" href="' + v.Uri + '" target="_blank">' + v.Name + '</a>\n ' +
+			// 				'	</div>\n ' +
+			// 				'	<span style="font-size: 1.5em;">' + numberWithCommas(String(v.Price)) + '</span><br>\n ' +
+			// 				'	<div class="cropped-image-container">\n ' +
+			// 				'		<a onmousedown="popularSave(\'' + v.Uri + '\')" href="' + v.Uri + '" target="_blank">\n ' +
+			// 				'			<img class="cropped-image" style="max-width:100%;" src="assets/img/no-image.png" id="suggestions-preload-image_' + i + '" />\n ' +
+			// 				'		</a>\n ' +
+			// 				'	</div>\n ' +
+			// 				'</div>';
+			// 			if (i <= 4) {
+			// 				suggestionsRow1Html += html;
+			// 			}
+
+			// 			var img = new Image();
+			// 			img.onload = function() {
+			// 				$('#suggestions-preload-image_' + i).attr('src', v.ImageUri);
+			// 			}
+			// 			img.src = v.ImageUri;
+			// 		});
+			// 		$('#suggestions-row-1').html(suggestionsRow1Html);
+			// 	}.bind(this),
+			// 	error: function(xhr, status, err) {
+			// 		// EMPTY
+			// 	}.bind(this),
+			// 	data: JSON.stringify({
+			// 		Id: id,
+			// 		Token: token,
+			// 		LoginType: 'fb',
+			// 		Size: '5'
+			// 	})
+			// });
+		}
+	</script>
 </div>
+
+
+
