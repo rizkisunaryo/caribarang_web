@@ -64,6 +64,19 @@ app.factory('master', [
 	}
 ]);
 
+app.factory('helper', [
+	function() {
+
+		var o = {};
+
+		o.numberWithCommas = function(x) {
+			return numberWithCommas(x);
+		}
+
+		return o;
+	}
+]);
+
 app.factory('suggestions', [
 	function() {
 
@@ -96,14 +109,31 @@ app.controller('MainCtrl', [
 	'$scope',
 	'$timeout',
 	'master',
+	'helper',
 	'suggestions',
-	function($scope, $timeout, master, suggestions) {
+	function($scope, $timeout, master, helper, suggestions) {
 		$scope.categories = master.categories;
 		$scope.getSuggestions = function(credential) {
 			suggestions.getSuggestions(credential, function() {
-                $scope.suggestions = suggestions.suggestions;
-                $scope.$apply();
+				$scope.suggestions = suggestions.suggestions;
+				if ($scope.suggestions.length > 0) {
+					$scope.isSuggestionsExist = true;
+				};
+				$scope.$apply();
+
+				$scope.suggestions.forEach(function(suggestion) {
+					var img = new Image();
+					img.onload = function() {
+						$('#suggestions-preload-image_' + suggestion._id).attr('src', suggestion._source.ImageUri);
+					}
+					img.src = suggestion._source.ImageUri;
+				});
+
 			});
+		}
+		$scope.numberWithCommas = function(x) {
+			var ret = helper.numberWithCommas(String(x));
+			return ret;
 		}
 	}
 ]);

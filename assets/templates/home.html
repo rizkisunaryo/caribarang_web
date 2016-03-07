@@ -52,18 +52,20 @@
 	<!-- ==============
 	SUGGESTIONS SECTION
 	=============== -->
-	<div class="row" id="suggestions-title" style="padding-left:10px;"></div>
-	<div class="row" id="suggestions-row-1"></div>
-	<div ng-repeat="suggestion in suggestions">
-		<div class="item-container text-center">
+	<div class="row" style="padding-left:10px;" ng-show="isSuggestionsExist">
+		<hr>
+		<h3>SUGGESTIONS</h3>
+	</div>
+	<div class="row">
+		<div ng-repeat="suggestion in suggestions" class="item-container text-center">
 			<span style="font-weight: bold;">{{suggestion._source.Source}}</span><br>
 			<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%">
-				<a onmousedown="popularSave(\'' + v.Uri + '\')" href="' + v.Uri + '" target="_blank">{{suggestion._source.Name}}</a>
+				<a ng-mousedown="popularSave(suggestion._source.Uri)" href="{{suggestion._source.Uri}}" target="_blank">{{suggestion._source.Name}}</a>
 			</div>
-			<span style="font-size: 1.5em;">{{suggestion._source.Price}}</span><br>
+			<span style="font-size: 1.5em;">{{numberWithCommas(suggestion._source.Price)}}</span><br>
 			<div class="cropped-image-container">
-				<a href="{{suggestion._source.Uri}}" target="_blank">
-					<img class="cropped-image" style="max-width:100%;" src="{{suggestion._source.ImageUri}}" />
+				<a ng-mousedown="popularSave('{{suggestion._source.Uri}}')" href="{{suggestion._source.Uri}}" target="_blank">
+					<img class="cropped-image" style="max-width:100%;" src="assets/img/no-image.png" id="suggestions-preload-image_{{suggestion._id}}" />
 				</a>
 			</div>
 		</div>
@@ -71,64 +73,11 @@
 	<script type="text/javascript">
 		function fbLoginSuccessCallback() {
 			angular.element(document.getElementById('angularBridge')).scope().getSuggestions({
-					Id: id,
-					Token: token,
-					LoginType: 'fb',
-					Size: '5'
-				});
-			// $.ajax({
-			// 	url: API_SERVER_URI + '/api/suggestions/list',
-			// 	type: 'POST',
-			// 	dataType: 'json',
-			// 	success: function(data) {
-			// 		if (typeof data.Message !== 'undefined' && data.Message != null && data.Message != "") {
-			// 			return;
-			// 		};
-			// 		if (data.hits.hits.length < 1) {
-			// 			return;
-			// 		};
-
-			// 		$('#suggestions-title').html('<hr><h3>SUGGESTIONS</h3>');
-			// 		var suggestionsRow1Html = '';
-			// 		$.each(data.hits.hits, function(i, e) {
-			// 			var v = e._source;
-			// 			var html = '<div class="item-container text-center">
-								// <span style="font-weight: bold;">' + v.Source + '</span><br>
-								// <div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%">
-								// 	<a onmousedown="popularSave(\'' + v.Uri + '\')" href="' + v.Uri + '" target="_blank">' + v.Name + '</a>
-								// </div>
-								// <span style="font-size: 1.5em;">' + numberWithCommas(String(v.Price)) + '</span><br>
-								// <div class="cropped-image-container">
-								// 	<a onmousedown="popularSave(\'' + v.Uri + '\')" href="' + v.Uri + '" target="_blank">
-								// 		<img class="cropped-image" style="max-width:100%;" src="assets/img/no-image.png" id="suggestions-preload-image_' + i + '" />
-								// 	</a>
-								// </div>
-			// 				'</div>';
-			// 			if (i <= 4) {
-			// 				suggestionsRow1Html += html;
-			// 			}
-
-			// 			var img = new Image();
-			// 			img.onload = function() {
-			// 				$('#suggestions-preload-image_' + i).attr('src', v.ImageUri);
-			// 			}
-			// 			img.src = v.ImageUri;
-			// 		});
-			// 		$('#suggestions-row-1').html(suggestionsRow1Html);
-			// 	}.bind(this),
-			// 	error: function(xhr, status, err) {
-			// 		// EMPTY
-			// 	}.bind(this),
-			// 	data: JSON.stringify({
-			// 		Id: id,
-			// 		Token: token,
-			// 		LoginType: 'fb',
-			// 		Size: '5'
-			// 	})
-			// });
+				Id: id,
+				Token: token,
+				LoginType: 'fb',
+				Size: '5'
+			});
 		}
 	</script>
 </div>
-
-
-
