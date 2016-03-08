@@ -55,18 +55,18 @@
 	SUGGESTIONS SECTION
 	=============== -->
 	<div class="row" style="padding-left:10px;" ng-show="isSuggestionsExist">
-		<hr>
+		<hr />
 		<h3>SUGGESTIONS</h3>
 	</div>
 	<div class="row">
 		<div ng-repeat="obj in suggestions" class="item-container text-center">
 			<span style="font-weight: bold;">{{obj._source.Source}}</span><br>
 			<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%">
-				<a ng-mousedown="popularSave(obj._source.Uri)" href="{{obj._source.Uri}}" target="_blank">{{obj._source.Name}}</a>
+				<a ng-mousedown="savePopular(obj._source.Uri)" href="{{obj._source.Uri}}" target="_blank">{{obj._source.Name}}</a>
 			</div>
 			<span style="font-size: 1.5em;">{{numberWithCommas(obj._source.Price)}}</span><br>
 			<div class="cropped-image-container">
-				<a ng-mousedown="popularSave('{{obj._source.Uri}}')" href="{{obj._source.Uri}}" target="_blank">
+				<a ng-mousedown="savePopular(obj._source.Uri)" href="{{obj._source.Uri}}" target="_blank">
 					<img class="cropped-image" style="max-width:100%;" src="assets/img/no-image.png" id="suggestions-preload-image_{{obj._id}}" />
 				</a>
 			</div>
@@ -82,4 +82,26 @@
 			});
 		}
 	</script>
+
+	<!-- ==========
+	POPULAR SECTION
+	=========== -->
+	<div class="row" style="padding-left:10px;" ng-show="isPopularExist" ng-init="getPopular({Size:'10'})">
+		<hr />
+		<h3>POPULAR</h3>
+	</div>
+	<div class="row">
+		<div ng-repeat="obj in populars" class="item-container text-center">
+			<span style="font-weight: bold;">{{obj._source.Source}}</span><br>
+			<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%">
+				<a ng-mousedown="savePopular('{{obj._source.Uri}}')" href="{{obj._source.Uri}}" target="_blank">{{obj._source.Name}}</a>
+			</div>
+			<span style="font-size: 1.5em;">{{numberWithCommas(obj._source.Price)}}</span><br>
+			<div class="cropped-image-container">
+				<a ng-mousedown="savePopular('{{obj._source.Uri}}')" href="{{obj._source.Uri}}" target="_blank">
+					<img class="cropped-image" style="max-width:100%;" src="assets/img/no-image.png" id="popular-preload-image_{{obj._id}}" />
+				</a>
+			</div>
+		</div>
+	</div>
 </div>

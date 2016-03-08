@@ -82,7 +82,7 @@ app.factory('suggestions', [
 			suggestions: []
 		};
 
-		o.getSuggestions = function(credential, callback) {
+		o.list = function(credential, callback) {
 			$.ajax({
 				url: API_SERVER_URI + '/api/suggestions/list',
 				type: 'POST',
@@ -103,13 +103,58 @@ app.factory('suggestions', [
 	}
 ]);
 
+app.factory('popular', [
+	function() {
+
+		var o = {
+			populars: []
+		};
+
+		o.list = function(criteria, callback) {
+			$.ajax({
+				url: API_SERVER_URI + '/api/popular/list',
+				type: 'POST',
+				dataType: 'json',
+				success: function(data) {
+					if (data != null && typeof data.hits.hits != 'undefined')
+						o.populars = data.hits.hits;
+					callback();
+				}.bind(this),
+				error: function(xhr, status, err) {
+					// EMPTY
+				}.bind(this),
+				data: JSON.stringify(criteria)
+			});
+
+		}
+
+		o.save = function(item) {
+			$.ajax({
+				url: API_SERVER_URI + '/api/popular/save',
+				type: 'POST',
+				dataType: 'json',
+				success: function(data) {
+					// EMPTY
+				}.bind(this),
+				error: function(xhr, status, err) {
+					// EMPTY
+				}.bind(this),
+				data: JSON.stringify(item)
+			});
+		}
+
+		return o;
+	}
+]);
+
 app.controller('MainCtrl', [
 	'$scope',
 	'$timeout',
 	'master',
 	'helper',
 	'suggestions',
-	function($scope, $timeout, master, helper, suggestions) {
+	'popular',
+	function($scope, $timeout, master, helper, suggestions, popular) {
 		$scope.getCategories = function() {
 			master.getCategories(function() {
 				$scope.categories = master.categories;
@@ -118,7 +163,7 @@ app.controller('MainCtrl', [
 		}
 
 		$scope.getSuggestions = function(credential) {
-			suggestions.getSuggestions(credential, function() {
+			suggestions.list(credential, function() {
 				$scope.suggestions = suggestions.suggestions;
 				if ($scope.suggestions.length > 0) {
 					$scope.isSuggestionsExist = true;
@@ -134,6 +179,29 @@ app.controller('MainCtrl', [
 				});
 
 			});
+		}
+
+		$scope.getPopular = function(criteria) {
+			popular.list(criteria, function() {
+				$scope.populars = popular.populars;
+				if ($scope.populars.length > 0) {
+					$scope.isPopularExist = true;
+				};
+				$scope.$apply();
+
+				$scope.populars.forEach(function(obj) {
+					var img = new Image();
+					img.onload = function() {
+						$('#popular-preload-image_' + obj._id).attr('src', obj._source.ImageUri);
+					}
+					img.src = obj._source.ImageUri;
+				});
+
+			});
+		}
+
+		$scope.savePopular = function(uri) {
+			popular.save({Uri:uri});
 		}
 
 		$scope.numberWithCommas = function(x) {
