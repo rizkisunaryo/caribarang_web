@@ -44,7 +44,9 @@
 				<input type="text" class="form-control" id="form_keyword" name="form_keyword" placeholder="Kata kunci"><br />
 				<input type="tel" class="form-control" ng-model="minPrice" placeholder="Harga minimum" onkeypress="return isNumberKey(event);" onkeyup="this.value=numberWithCommas(this.value);" style="width:49%; float:left;">
 				<input type="tel" class="form-control" ng-model="maxPrice" placeholder="Harga maximum" onkeypress="return isNumberKey(event);" onkeyup="this.value=numberWithCommas(this.value);" style="width:49%; float:right;">
-				<br /><br /><br />
+				<div style="margin-top:50px;" ng-init="getSources()">
+					<label class="checkbox-inline" style="margin-left: 10px;" ng-repeat="obj in sources | orderBy:'Name'"><input type="checkbox" value="{{obj.Name}}" ng-click="toggleSource(obj.Name)" ng-checked="selectedSources.indexOf(obj.Name) > -1">{{obj.Name}}</label>
+				</div><br>
 				<button type="submit" class="btn btn-default">C A R I</button>
 			</form>
 		</div>

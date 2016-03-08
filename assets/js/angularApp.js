@@ -40,7 +40,9 @@ app.factory('master', [
 	function() {
 
 		var o = {
-			categories: []
+			categories: [],
+			sources: [],
+			selectedSources: []
 		};
 
 		o.getCategories = function(callback) {
@@ -50,6 +52,21 @@ app.factory('master', [
 				dataType: 'json',
 				success: function(data) {
 					o.categories = data;
+					callback();
+				}.bind(this),
+				error: function(xhr, status, err) {
+					// EMPTY
+				}.bind(this)
+			});
+		}
+
+		o.getSources = function(callback) {
+			$.ajax({
+				url: API_SERVER_URI + '/api/source/list',
+				type: 'GET',
+				dataType: 'json',
+				success: function(data) {
+					o.sources = data;
 					callback();
 				}.bind(this),
 				error: function(xhr, status, err) {
@@ -161,6 +178,30 @@ app.controller('MainCtrl', [
 				$scope.$apply;
 			})
 		}
+
+		$scope.getSources = function() {
+			master.getSources(function() {
+				$scope.sources = master.sources;
+				console.log($scope.sources);
+				$scope.$apply;
+			})
+		}
+
+		$scope.selectedSources = [];
+
+		$scope.toggleSource = function(sourceName) {
+			var idx = $scope.selectedSources.indexOf(sourceName);
+
+			// is currently selected
+			if (idx > -1) {
+				$scope.selectedSources.splice(idx, 1);
+			}
+
+			// is newly selected
+			else {
+				$scope.selectedSources.push(sourceName);
+			}
+		};
 
 		$scope.getSuggestions = function(credential) {
 			suggestions.list(credential, function() {
