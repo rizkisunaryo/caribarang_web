@@ -9,12 +9,7 @@ app.config([
 			.state('home', {
 				url: '/home',
 				templateUrl: 'assets/templates/home.html',
-				controller: 'MainCtrl',
-				resolve: {
-					postPromise: ['master', function(master) {
-						return master.getCategories();
-					}]
-				}
+				controller: 'MainCtrl'
 			})
 			.state('test', {
 				url: '/test/{id}',
@@ -48,16 +43,19 @@ app.factory('master', [
 			categories: []
 		};
 
-		o.getCategories = function() {
-			o.categories = [{
-				Category: 'hp',
-				CategoryOrder: 0,
-				Label: 'Semua handphone'
-			}, {
-				Category: 'test',
-				CategoryOrder: 10,
-				Label: 'Semua test'
-			}];
+		o.getCategories = function(callback) {
+			$.ajax({
+				url: API_SERVER_URI + '/api/category/list',
+				type: 'GET',
+				dataType: 'json',
+				success: function(data) {
+					o.categories = data;
+					callback();
+				}.bind(this),
+				error: function(xhr, status, err) {
+					// EMPTY
+				}.bind(this)
+			});
 		}
 
 		return o;
@@ -112,7 +110,13 @@ app.controller('MainCtrl', [
 	'helper',
 	'suggestions',
 	function($scope, $timeout, master, helper, suggestions) {
-		$scope.categories = master.categories;
+		$scope.getCategories = function() {
+			master.getCategories(function() {
+				$scope.categories = master.categories;
+				$scope.$apply;
+			})
+		}
+
 		$scope.getSuggestions = function(credential) {
 			suggestions.getSuggestions(credential, function() {
 				$scope.suggestions = suggestions.suggestions;
@@ -131,6 +135,7 @@ app.controller('MainCtrl', [
 
 			});
 		}
+
 		$scope.numberWithCommas = function(x) {
 			var ret = helper.numberWithCommas(String(x));
 			return ret;

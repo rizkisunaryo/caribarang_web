@@ -37,8 +37,9 @@
 		<div class="col-sm-3"></div>
 		<div class="col-sm-6">
 			<form role="form" method="GET" id="form">
-				<select class="form-control" id="form_category" name="form_category">
-					<option ng-repeat="category in categories | orderBy:'-CategoryOrder'" value="{{category.Category}}">{{category.Label}}</option>
+				<select class="form-control" id="form_category" name="form_category" ng-model="category" ng-init="getCategories()">
+					<option value="">=== Kategori ===</option>
+					<option ng-repeat="obj in categories | orderBy:'-CategoryOrder'" value="{{obj.Category}}">{{obj.Label}}</option>
 				</select><br />
 				<input type="text" class="form-control" id="form_keyword" name="form_keyword" placeholder="Kata kunci"><br />
 				<input type="tel" class="form-control" ng-model="minPrice" placeholder="Harga minimum" onkeypress="return isNumberKey(event);" onkeyup="this.value=numberWithCommas(this.value);"><br />
@@ -57,15 +58,15 @@
 		<h3>SUGGESTIONS</h3>
 	</div>
 	<div class="row">
-		<div ng-repeat="suggestion in suggestions" class="item-container text-center">
-			<span style="font-weight: bold;">{{suggestion._source.Source}}</span><br>
+		<div ng-repeat="obj in suggestions" class="item-container text-center">
+			<span style="font-weight: bold;">{{obj._source.Source}}</span><br>
 			<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%">
-				<a ng-mousedown="popularSave(suggestion._source.Uri)" href="{{suggestion._source.Uri}}" target="_blank">{{suggestion._source.Name}}</a>
+				<a ng-mousedown="popularSave(obj._source.Uri)" href="{{obj._source.Uri}}" target="_blank">{{obj._source.Name}}</a>
 			</div>
-			<span style="font-size: 1.5em;">{{numberWithCommas(suggestion._source.Price)}}</span><br>
+			<span style="font-size: 1.5em;">{{numberWithCommas(obj._source.Price)}}</span><br>
 			<div class="cropped-image-container">
-				<a ng-mousedown="popularSave('{{suggestion._source.Uri}}')" href="{{suggestion._source.Uri}}" target="_blank">
-					<img class="cropped-image" style="max-width:100%;" src="assets/img/no-image.png" id="suggestions-preload-image_{{suggestion._id}}" />
+				<a ng-mousedown="popularSave('{{obj._source.Uri}}')" href="{{obj._source.Uri}}" target="_blank">
+					<img class="cropped-image" style="max-width:100%;" src="assets/img/no-image.png" id="suggestions-preload-image_{{obj._id}}" />
 				</a>
 			</div>
 		</div>
