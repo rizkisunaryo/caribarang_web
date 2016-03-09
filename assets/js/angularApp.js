@@ -30,6 +30,11 @@ app.config([
 				url: '/test/{id}/lagi/{lagiId}/',
 				templateUrl: 'assets/templates/test-lagi.html',
 				controller: 'TestLagiCtrl',
+			})
+			.state('list', {
+				url: '/list/{category}/{keyword}/{minPrice}/{maxPrice}',
+				templateUrl: 'assets/templates/list.html',
+				controller: 'ListCtrl'
 			});
 
 		$urlRouterProvider.otherwise('home');
@@ -51,8 +56,10 @@ app.factory('master', [
 				type: 'GET',
 				dataType: 'json',
 				success: function(data) {
-					o.categories = data;
-					callback();
+					// setTimeout(function() {
+						o.categories = data;
+						callback();
+					// }, 100);
 				}.bind(this),
 				error: function(xhr, status, err) {
 					// EMPTY
@@ -66,8 +73,10 @@ app.factory('master', [
 				type: 'GET',
 				dataType: 'json',
 				success: function(data) {
-					o.sources = data;
-					callback();
+					// setTimeout(function() {
+						o.sources = data;
+						callback();
+					// }, 100);
 				}.bind(this),
 				error: function(xhr, status, err) {
 					// EMPTY
@@ -167,23 +176,27 @@ app.factory('popular', [
 app.controller('MainCtrl', [
 	'$scope',
 	'$timeout',
+	'$location',
 	'master',
 	'helper',
 	'suggestions',
 	'popular',
-	function($scope, $timeout, master, helper, suggestions, popular) {
+	function($scope, $timeout, $location, master, helper, suggestions, popular) {
 		$scope.getCategories = function() {
 			master.getCategories(function() {
-				$scope.categories = master.categories;
-				$scope.$apply;
+				$timeout(function() {
+					$scope.categories = master.categories;
+					$scope.$apply;
+				}, 0);
 			})
 		}
 
 		$scope.getSources = function() {
 			master.getSources(function() {
-				$scope.sources = master.sources;
-				console.log($scope.sources);
-				$scope.$apply;
+				$timeout(function() {
+					$scope.sources = master.sources;
+					$scope.$apply;
+				}, 0);
 			})
 		}
 
@@ -205,39 +218,41 @@ app.controller('MainCtrl', [
 
 		$scope.getSuggestions = function(credential) {
 			suggestions.list(credential, function() {
-				$scope.suggestions = suggestions.suggestions;
-				if ($scope.suggestions.length > 0) {
-					$scope.isSuggestionsExist = true;
-				};
-				$scope.$apply();
+				$timeout(function() {
+					$scope.suggestions = suggestions.suggestions;
+					if ($scope.suggestions.length > 0) {
+						$scope.isSuggestionsExist = true;
+					};
+					$scope.$apply();
 
-				$scope.suggestions.forEach(function(suggestion) {
-					var img = new Image();
-					img.onload = function() {
-						$('#suggestions-preload-image_' + suggestion._id).attr('src', suggestion._source.ImageUri);
-					}
-					img.src = suggestion._source.ImageUri;
-				});
-
+					$scope.suggestions.forEach(function(suggestion) {
+						var img = new Image();
+						img.onload = function() {
+							$('#suggestions-preload-image_' + suggestion._id).attr('src', suggestion._source.ImageUri);
+						}
+						img.src = suggestion._source.ImageUri;
+					});
+				}, 0);
 			});
 		}
 
 		$scope.getPopular = function(criteria) {
 			popular.list(criteria, function() {
-				$scope.populars = popular.populars;
-				if ($scope.populars.length > 0) {
-					$scope.isPopularExist = true;
-				};
-				$scope.$apply();
+				$timeout(function() {
+					$scope.populars = popular.populars;
+					if ($scope.populars.length > 0) {
+						$scope.isPopularExist = true;
+					};
+					$scope.$apply();
 
-				$scope.populars.forEach(function(obj) {
-					var img = new Image();
-					img.onload = function() {
-						$('#popular-preload-image_' + obj._id).attr('src', obj._source.ImageUri);
-					}
-					img.src = obj._source.ImageUri;
-				});
-
+					$scope.populars.forEach(function(obj) {
+						var img = new Image();
+						img.onload = function() {
+							$('#popular-preload-image_' + obj._id).attr('src', obj._source.ImageUri);
+						}
+						img.src = obj._source.ImageUri;
+					});
+				}, 0);
 			});
 		}
 
@@ -249,6 +264,21 @@ app.controller('MainCtrl', [
 			var ret = helper.numberWithCommas(String(x));
 			return ret;
 		}
+
+		$scope.search = function() {
+			$location.path('/list/'+$scope.category+'/'+$scope.keyword+'/'+$scope.minPrice+'/'+$scope.maxPrice);
+		}
+	}
+]);
+
+app.controller('ListCtrl', [
+	'$scope',
+	'$stateParams',
+	function($scope, $stateParams) {
+		$scope.category = $stateParams.category;
+		$scope.keyword = $stateParams.keyword;
+		$scope.minPrice = $stateParams.minPrice;
+		$scope.maxPrice = $stateParams.maxPrice;
 	}
 ]);
 

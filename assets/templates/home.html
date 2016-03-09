@@ -36,12 +36,12 @@
 	<div class="row">
 		<div class="col-sm-3"></div>
 		<div class="col-sm-6">
-			<form role="form" method="GET" id="form">
+			<form role="form" ng-submit="search()">
 				<select class="form-control" id="form_category" name="form_category" ng-model="category" ng-init="getCategories()">
 					<option value="">=== Kategori ===</option>
 					<option ng-repeat="obj in categories | orderBy:'-CategoryOrder'" value="{{obj.Category}}">{{obj.Label}}</option>
 				</select><br />
-				<input type="text" class="form-control" id="form_keyword" name="form_keyword" placeholder="Kata kunci"><br />
+				<input type="text" class="form-control" ng-model="keyword" placeholder="Kata kunci"><br />
 				<input type="tel" class="form-control" ng-model="minPrice" placeholder="Harga minimum" onkeypress="return isNumberKey(event);" onkeyup="this.value=numberWithCommas(this.value);" style="width:49%; float:left;">
 				<input type="tel" class="form-control" ng-model="maxPrice" placeholder="Harga maximum" onkeypress="return isNumberKey(event);" onkeyup="this.value=numberWithCommas(this.value);" style="width:49%; float:right;">
 				<div style="margin-top:50px;" ng-init="getSources()">
