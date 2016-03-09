@@ -35,6 +35,11 @@ app.config([
 				url: '/list/{category}/{keyword}/{minPrice}/{maxPrice}',
 				templateUrl: 'assets/templates/list.html',
 				controller: 'ListCtrl'
+			})
+			.state('listSl', {
+				url: '/list/{category}/{keyword}/{minPrice}/{maxPrice}/',
+				templateUrl: 'assets/templates/list.html',
+				controller: 'ListCtrl'
 			});
 
 		$urlRouterProvider.otherwise('home');
@@ -266,7 +271,12 @@ app.controller('MainCtrl', [
 		}
 
 		$scope.search = function() {
-			$location.path('/list/'+$scope.category+'/'+$scope.keyword+'/'+$scope.minPrice+'/'+$scope.maxPrice);
+			var category = escape($scope.category);
+			var keyword = escape($scope.keyword);
+			keyword = keyword.split('/').join('&#47;');
+			var minPrice = escape($scope.minPrice);
+			var maxPrice = escape($scope.maxPrice);
+			$location.path('/list/'+category+'/'+keyword+'/'+minPrice+'/'+maxPrice);
 		}
 	}
 ]);
@@ -275,10 +285,11 @@ app.controller('ListCtrl', [
 	'$scope',
 	'$stateParams',
 	function($scope, $stateParams) {
-		$scope.category = $stateParams.category;
-		$scope.keyword = $stateParams.keyword;
-		$scope.minPrice = $stateParams.minPrice;
-		$scope.maxPrice = $stateParams.maxPrice;
+		$scope.category = unescape($stateParams.category);
+		$scope.keyword = $stateParams.keyword.split('&#47;').join('/');
+		$scope.keyword = unescape($scope.keyword);
+		$scope.minPrice = unescape($stateParams.minPrice);
+		$scope.maxPrice = unescape($stateParams.maxPrice);
 	}
 ]);
 
