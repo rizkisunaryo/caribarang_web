@@ -1,4 +1,106 @@
-{{category}} <br />
+<!-- {{category}} <br />
 {{keyword}} <br />
 {{minPrice}} <br />
 {{maxPrice}} <br />
+<div ng-repeat="str in selectedSources">{{str}}<br /></div>
+<hr/>
+<div ng-init="listItems()">
+	<div ng-repeat="arr in items">
+		<div ng-repeat="obj in arr">{{obj._source.Name}}</div>
+		<br/><br/><br/>
+	</div>
+</div> -->
+
+
+
+<div class="container">
+	<div class="row text-center">
+		<div class="col-sm-3"></div>
+		<div class="col-sm-6 text-center" style="margin-bottom:20px;">
+			<h1>CariBarang</h1>
+		</div>
+		<div class="col-sm-3">
+		</div>
+	</div>
+	<div class="row" style="margin-bottom:10px;">
+		<div class="col-sm-12">
+			<div class="text-left" style="float:left;">
+				<!-- <button type="button" class="btn btn-warning">SEARCH</button> -->
+				<a href=".">HOME</a> | <a data-toggle="modal" data-target="#myModal" style="cursor:pointer;">SEARCH</a>
+				<!-- Modal -->
+				<div class="modal fade" id="myModal" role="dialog">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">CariBarang</h4>
+							</div>
+							<div class="modal-body">
+								<form role="form" ng-submit="search()">
+									<select class="form-control" id="form_category" name="form_category" ng-model="category" ng-init="getCategories()">
+										<option value="">=== Kategori ===</option>
+										<option ng-repeat="obj in categories | orderBy:'-CategoryOrder'" value="{{obj.Category}}" ng-selected="obj.Category===category">{{obj.Label}}</option>
+									</select><br />
+									<input type="text" class="form-control" ng-model="keyword" placeholder="Kata kunci"><br />
+									<input type="tel" class="form-control" ng-model="minPrice" placeholder="Harga minimum" onkeypress="return isNumberKey(event);" onkeyup="this.value=numberWithCommas(this.value);" style="width:49%; float:left;">
+									<input type="tel" class="form-control" ng-model="maxPrice" placeholder="Harga maximum" onkeypress="return isNumberKey(event);" onkeyup="this.value=numberWithCommas(this.value);" style="width:49%; float:right;">
+									<div style="margin-top:50px;" ng-init="getSources()">
+										<label class="checkbox-inline" style="margin-left: 10px;" ng-repeat="obj in sources | orderBy:'Name'"><input type="checkbox" value="{{obj.Name}}" ng-click="toggleSource(obj.Name)" ng-checked="selectedSources.indexOf(obj.Name) > -1">{{obj.Name}}</label>
+									</div><br>
+								    <div class="text-right">
+								    	<button type="submit" class="btn btn-default">C A R I</button>
+								    </div>
+								</form>
+							</div>
+							<!-- <div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">SEARCH</button>
+							</div> -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="text-right" style="float:right;">
+				<div id="fb-login-div" style="display:none;">
+					<div id="fb-root"></div>
+					<div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="false" onlogin="checkLoginState();"></div>
+				</div>
+				<div id="user-drop-down" style="margin-top:-9px; cursor:pointer; float:right; display:none;">
+					<ul class="nav nav-pills left">
+						<li class="dropdown active span8">
+							<a class="dropdown-toggle" id="inp_impact" data-toggle="dropdown">
+								<span id="user-full-name"></span>&nbsp;<span class="caret"></span>
+							</a>
+							<ul ID="divNewNotifications" class="dropdown-menu" style="cursor:pointer;">
+								<li><a onclick="logoutFB();">Log Out</a></li> 
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<script type="text/javascript">
+				$('.dropdown-toggle').dropdown();
+				$('#divNewNotifications li').on('click', function() {
+			    	$('#user-full-name').html($(this).find('a').html());
+			    });
+			</script>
+		</div>
+	</div>
+	<!-- <div class="row" id="result-row-1"></div>
+	<div class="row" id="result-row-2"></div> -->
+	<div ng-init="listItems()">
+		<div class="row" ng-repeat="arr in items">
+			<div ng-repeat="obj in arr" class="item-container text-center">
+				<span style="font-weight: bold;">{{obj._source.Source}}</span><br>
+				<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%">
+					<a ng-mousedown="savePopular(obj._source.Uri)" href="{{obj._source.Uri}}" target="_blank">{{obj._source.Name}}</a>
+				</div>
+				<span style="font-size: 1.5em;">{{numberWithCommas(obj._source.Price)}}</span><br>
+				<div class="cropped-image-container">
+					<a ng-mousedown="savePopular(obj._source.Uri)" href="{{obj._source.Uri}}" target="_blank">
+						<img class="cropped-image" style="max-width:100%;" src="assets/img/no-image.png" id="item-preload-image_{{obj._id}}" />
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
