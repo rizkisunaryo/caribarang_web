@@ -116,7 +116,8 @@ app.factory('helper', [
 			return numberWithCommas(x);
 		}
 
-		o.escapeUrl = function(str) {
+		o.escapeUrl = function(pStr) {
+			var str = pStr;
 			if (typeof str === 'undefined') return '';
 
 			str = escape(str);
@@ -124,7 +125,8 @@ app.factory('helper', [
 			return str;
 		}
 
-		o.unescapeUrl = function(str) {
+		o.unescapeUrl = function(pStr) {
+			var str = pStr
 			if (typeof str === 'undefined') return '';
 
 			str = str.split('&#47;').join('/');
@@ -137,7 +139,6 @@ app.factory('helper', [
 				if (isFbInit==0) {
 					setTimeout(checkFbLoginBtnInside, 500);
 				} else {
-					console.log('masuk else');
 					$('#fb-div').html($('#fb-div-master').html());
 				}
 			}
@@ -189,8 +190,8 @@ app.factory('popular', [
 				type: 'POST',
 				dataType: 'json',
 				success: function(data) {
-					if (data != null && typeof data.hits.hits != 'undefined')
-						o.populars = data.hits.hits;
+					if (data != null)
+						o.populars = data;
 					callback();
 				}.bind(this),
 				error: function(xhr, status, err) {
@@ -245,20 +246,20 @@ app.factory('search', [
 
 		}
 
-		// o.save = function(item) {
-		// 	$.ajax({
-		// 		url: API_SERVER_URI + '/api/popular/save',
-		// 		type: 'POST',
-		// 		dataType: 'json',
-		// 		success: function(data) {
-		// 			// EMPTY
-		// 		}.bind(this),
-		// 		error: function(xhr, status, err) {
-		// 			// EMPTY
-		// 		}.bind(this),
-		// 		data: JSON.stringify(item)
-		// 	});
-		// }
+		o.save = function(item) {
+			$.ajax({
+				url: API_SERVER_URI + '/api/search/save',
+				type: 'POST',
+				dataType: 'json',
+				success: function(data) {
+					// EMPTY
+				}.bind(this),
+				error: function(xhr, status, err) {
+					// EMPTY
+				}.bind(this),
+				data: JSON.stringify(item)
+			});
+		}
 
 		return o;
 	}
@@ -272,7 +273,8 @@ app.controller('MainCtrl', [
 	'helper',
 	'suggestions',
 	'popular',
-	function($scope, $timeout, $location, master, helper, suggestions, popular) {
+	'search',
+	function($scope, $timeout, $location, master, helper, suggestions, popular, search) {
 		helper.checkFbLoginBtn();
 
 		$scope.getCategories = function() {
@@ -332,7 +334,13 @@ app.controller('MainCtrl', [
 		$scope.getPopular = function(criteria) {
 			popular.list(criteria, function() {
 				$timeout(function() {
-					$scope.populars = popular.populars;
+					$scope.populars = [];
+					var popularI = 0;
+					popular.populars.forEach(function(obj) {
+						$scope.populars[popularI] = obj;
+						$scope.populars[popularI].Id = popularI;
+						popularI++;
+					});
 					if ($scope.populars.length > 0) {
 						$scope.isPopularExist = true;
 					};
@@ -341,9 +349,9 @@ app.controller('MainCtrl', [
 					$scope.populars.forEach(function(obj) {
 						var img = new Image();
 						img.onload = function() {
-							$('#popular-preload-image_' + obj._id).attr('src', obj._source.ImageUri);
+							$('#popular-preload-image_' + obj.Id).attr('src', obj.ImageUri);
 						}
-						img.src = obj._source.ImageUri;
+						img.src = obj.ImageUri;
 					});
 				}, 0);
 			});
@@ -359,6 +367,13 @@ app.controller('MainCtrl', [
 		}
 
 		$scope.search = function() {
+			search.save({
+				Id: id,
+				Token: token,
+				LoginType: 'fb',
+				Keyword: $scope.keyword.trim()
+			});
+
 			var category = helper.escapeUrl($scope.category);
 			var keyword = helper.escapeUrl($scope.keyword);
 			var minPrice = helper.escapeUrl($scope.minPrice);
@@ -383,10 +398,12 @@ app.controller('ListCtrl', [
 	'$stateParams',
 	'$timeout',
 	'$location',
+	'$sce',
 	'helper',
 	'search',
 	'master',
-	function($scope, $stateParams, $timeout, $location, helper, search, master) {
+	'popular',
+	function($scope, $stateParams, $timeout, $location, $sce, helper, search, master, popular) {
 		helper.checkFbLoginBtn();
 		$('.modal-backdrop.fade.in').remove();
 
@@ -398,6 +415,22 @@ app.controller('ListCtrl', [
 		$scope.selectedSources = sourcesUrl.split('|||');
 		$scope.pageNo = helper.unescapeUrl($stateParams.pageNo);
 		if ($scope.pageNo=='') $scope.pageNo = '1';
+
+		var baseUrl = '/#/list/'+helper.escapeUrl($stateParams.category)+'/'+helper.escapeUrl($stateParams.keyword)+'/'+helper.escapeUrl($stateParams.minPrice)+'/'+helper.escapeUrl($stateParams.maxPrice)+'/'+helper.escapeUrl($stateParams.sources);
+		$scope.showLinkFirst = function() {
+			$scope.linkFirst = baseUrl;
+			if (Number($scope.pageNo)!=1) {
+				return true;
+			};
+			return false;
+		}
+		if ($scope.pageNo==1) {
+			$scope.linkActiveOne = 'active';
+			$scope.linkValueOne = 1;
+		} else if ($scope.pageNo>1) {
+			$scope.linkValueOne = $scope.pageNo-2<1 ? 1 : $scope.pageNo-2;
+			$scope.linkOne = baseUrl + '/' + $scope.linkValueOne;
+		}
 
 		$scope.getCategories = function() {
 			master.getCategories(function() {
@@ -466,6 +499,10 @@ app.controller('ListCtrl', [
 		$scope.numberWithCommas = function(x) {
 			var ret = helper.numberWithCommas(String(x));
 			return ret;
+		}
+
+		$scope.savePopular = function(uri) {
+			popular.save({Uri:uri});
 		}
 
 		$scope.search = function() {

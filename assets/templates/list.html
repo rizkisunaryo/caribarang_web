@@ -43,31 +43,11 @@
 								    </div>
 								</form>
 							</div>
-							<!-- <div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">SEARCH</button>
-							</div> -->
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="text-right" style="float:right;" id="fb-div">
-				<!-- <div id="fb-login-div" style="display:none;">
-					<div id="fb-root"></div>
-					<div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="false" onlogin="checkLoginState();"></div>
-				</div>
-				<div id="user-drop-down" style="margin-top:-9px; cursor:pointer; float:right; display:none;">
-					<ul class="nav nav-pills left">
-						<li class="dropdown active span8">
-							<a class="dropdown-toggle" id="inp_impact" data-toggle="dropdown">
-								<span id="user-full-name"></span>&nbsp;<span class="caret"></span>
-							</a>
-							<ul ID="divNewNotifications" class="dropdown-menu" style="cursor:pointer;">
-								<li><a onclick="logoutFB();">Log Out</a></li> 
-							</ul>
-						</li>
-					</ul>
-				</div> -->
-			</div>
+			<div class="text-right" style="float:right;" id="fb-div"></div>
 			<script type="text/javascript">
 				$('.dropdown-toggle').dropdown();
 				$('#divNewNotifications li').on('click', function() {
@@ -76,8 +56,7 @@
 			</script>
 		</div>
 	</div>
-	<!-- <div class="row" id="result-row-1"></div>
-	<div class="row" id="result-row-2"></div> -->
+
 	<div ng-init="listItems()">
 		<div class="row" ng-repeat="arr in items">
 			<div ng-repeat="obj in arr" class="item-container text-center">
@@ -92,6 +71,16 @@
 					</a>
 				</div>
 			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-4"></div>
+		<div class="col-sm-4 text-center">
+			<ul class="pagination">
+				<li ng-show="showLinkFirst()"><a id="linkAFirst" href="{{linkFirst}}">First</a></li>
+				<li id="linkLiOne" class="{{linkActiveOne}}"><a id="linkOne" href="{{linkOne}}">{{linkValueOne}}</a></li>
+			</ul>
 		</div>
 	</div>
 </div>
