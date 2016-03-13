@@ -425,11 +425,11 @@ app.controller('ListCtrl', [
 			return false;
 		}
 		if ($scope.pageNo==1) {
-			$scope.linkActiveOne = 'active';
-			$scope.linkValueOne = 1;
+			$scope.linkActive1 = 'active';
+			$scope.linkValue1 = 1;
 		} else if ($scope.pageNo>1) {
-			$scope.linkValueOne = $scope.pageNo-2<1 ? 1 : $scope.pageNo-2;
-			$scope.linkOne = baseUrl + '/' + $scope.linkValueOne;
+			$scope.linkValue1 = $scope.pageNo-2<1 ? 1 : $scope.pageNo-2;
+			$scope.link1 = baseUrl + '/' + $scope.linkValue1;
 		}
 
 		$scope.getCategories = function() {
