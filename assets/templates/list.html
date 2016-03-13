@@ -1,17 +1,8 @@
-<!-- {{category}} <br />
-{{keyword}} <br />
-{{minPrice}} <br />
-{{maxPrice}} <br />
-<div ng-repeat="str in selectedSources">{{str}}<br /></div>
-<hr/>
-<div ng-init="listItems()">
-	<div ng-repeat="arr in items">
-		<div ng-repeat="obj in arr">{{obj._source.Name}}</div>
-		<br/><br/><br/>
-	</div>
-</div> -->
-
-
+<script type="text/javascript">
+	function fbLoginSuccessCallback() {
+		// DO NOTHING
+	}
+</script>
 
 <div class="container">
 	<div class="row text-center">
@@ -59,8 +50,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="text-right" style="float:right;">
-				<div id="fb-login-div" style="display:none;">
+			<div class="text-right" style="float:right;" id="fb-div">
+				<!-- <div id="fb-login-div" style="display:none;">
 					<div id="fb-root"></div>
 					<div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="false" onlogin="checkLoginState();"></div>
 				</div>
@@ -75,7 +66,7 @@
 							</ul>
 						</li>
 					</ul>
-				</div>
+				</div> -->
 			</div>
 			<script type="text/javascript">
 				$('.dropdown-toggle').dropdown();

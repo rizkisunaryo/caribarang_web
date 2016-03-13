@@ -95,6 +95,7 @@
 		var id = '';
 		var token = '';
 		var name = '';
+		var isFbInit = 0;
 
 		// This is called with the results from from FB.getLoginStatus().
 		function statusChangeCallback(response) {
@@ -194,11 +195,15 @@
 						$('#user-drop-down').show();
 
 						fbLoginSuccessCallback();
+
+						isFbInit = 1;
 					}.bind(this),
 					error: function(xhr, status, err) {
 						$('#user-drop-down').hide();
 						$('#fb-login-div').show();
 						alert("please login respectively");
+
+						isFbInit = 1;
 					}.bind(this),
 					data: JSON.stringify({
 						Id: response.id,
@@ -214,7 +219,28 @@
 			});
 		}
 	</script>
+
+	<div id="fb-div-master" class="text-right" style="float:right; display:none;">
+		<div id="fb-login-div" style="display:none;">
+			<div id="fb-root"></div>
+			<div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="false" onlogin="checkLoginState();"></div>
+		</div>
+		<div id="user-drop-down" style="margin-top:-9px; cursor:pointer; float:right; display:none;">
+			<ul class="nav nav-pills left">
+				<li class="dropdown active span8">
+					<a class="dropdown-toggle" id="inp_impact" data-toggle="dropdown">
+						<span id="user-full-name"></span>&nbsp;<span class="caret"></span>
+					</a>
+					<ul ID="divNewNotifications" class="dropdown-menu" style="cursor:pointer;">
+						<li><a onclick="logoutFB();">Log Out</a></li> 
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
 	<ui-view></ui-view>
+
+
 </body>
 
 </html>

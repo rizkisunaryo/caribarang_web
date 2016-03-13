@@ -72,10 +72,8 @@ app.factory('master', [
 					type: 'GET',
 					dataType: 'json',
 					success: function(data) {
-						// setTimeout(function() {
-							o.categories = data;
-							callback();
-						// }, 100);
+						o.categories = data;
+						callback();
 					}.bind(this),
 					error: function(xhr, status, err) {
 						// EMPTY
@@ -87,20 +85,22 @@ app.factory('master', [
 		}
 
 		o.getSources = function(callback) {
-			$.ajax({
-				url: API_SERVER_URI + '/api/source/list',
-				type: 'GET',
-				dataType: 'json',
-				success: function(data) {
-					// setTimeout(function() {
+			if (o.categories.length <= 0) {
+				$.ajax({
+					url: API_SERVER_URI + '/api/source/list',
+					type: 'GET',
+					dataType: 'json',
+					success: function(data) {
 						o.sources = data;
 						callback();
-					// }, 100);
-				}.bind(this),
-				error: function(xhr, status, err) {
-					// EMPTY
-				}.bind(this)
-			});
+					}.bind(this),
+					error: function(xhr, status, err) {
+						// EMPTY
+					}.bind(this)
+				});
+			} else {
+				callback();
+			}
 		}
 
 		return o;
@@ -130,6 +130,18 @@ app.factory('helper', [
 			str = str.split('&#47;').join('/');
 			str = unescape(str);
 			return str;
+		}
+
+		o.checkFbLoginBtn = function() {
+			function checkFbLoginBtnInside() {
+				if (isFbInit==0) {
+					setTimeout(checkFbLoginBtnInside, 500);
+				} else {
+					console.log('masuk else');
+					$('#fb-div').html($('#fb-div-master').html());
+				}
+			}
+			checkFbLoginBtnInside();
 		}
 
 		return o;
@@ -261,6 +273,8 @@ app.controller('MainCtrl', [
 	'suggestions',
 	'popular',
 	function($scope, $timeout, $location, master, helper, suggestions, popular) {
+		helper.checkFbLoginBtn();
+
 		$scope.getCategories = function() {
 			master.getCategories(function() {
 				$timeout(function() {
@@ -352,9 +366,11 @@ app.controller('MainCtrl', [
 			var sources = '';
 			var sourcesI = 0;
 			$scope.selectedSources.forEach(function(str) {
-				if (sourcesI>0) sources+='|||';
-				sources += str;
-				sourcesI++;
+				if (str.trim!='') {
+					if (sourcesI>0) sources+='|||';
+					sources += str;
+					sourcesI++;
+				}
 			});
 			sources = helper.escapeUrl(sources);
 			$location.path('/list/'+category+'/'+keyword+'/'+minPrice+'/'+maxPrice+'/'+sources);
@@ -366,10 +382,14 @@ app.controller('ListCtrl', [
 	'$scope',
 	'$stateParams',
 	'$timeout',
+	'$location',
 	'helper',
 	'search',
 	'master',
-	function($scope, $stateParams, $timeout, helper, search, master) {
+	function($scope, $stateParams, $timeout, $location, helper, search, master) {
+		helper.checkFbLoginBtn();
+		$('.modal-backdrop.fade.in').remove();
+
 		$scope.category = helper.unescapeUrl($stateParams.category);
 		$scope.keyword = helper.unescapeUrl($stateParams.keyword);
 		$scope.minPrice = helper.unescapeUrl($stateParams.minPrice);
@@ -388,13 +408,36 @@ app.controller('ListCtrl', [
 			})
 		}
 
+		$scope.getSources = function() {
+			master.getSources(function() {
+				$timeout(function() {
+					$scope.sources = master.sources;
+					$scope.$apply;
+				}, 0);
+			})
+		}
+
+		$scope.toggleSource = function(sourceName) {
+			var idx = $scope.selectedSources.indexOf(sourceName);
+
+			// is currently selected
+			if (idx > -1) {
+				$scope.selectedSources.splice(idx, 1);
+			}
+
+			// is newly selected
+			else {
+				$scope.selectedSources.push(sourceName);
+			}
+		};
+
 		$scope.listItems = function() {
 			var from = ((Number($scope.pageNo) - 1) * 10).toString();
 			search.list({
 				Category: $scope.category,
 				Keyword: $scope.keyword,
-				MinPrice: $scope.minPrice, 
-				MaxPrice: $scope.maxPrice,
+				MinPrice: $scope.minPrice.split(',').join(''), 
+				MaxPrice: $scope.maxPrice.split(',').join(''),
 				Sources: $scope.selectedSources,
 				Size: '10',
 				From: from
@@ -423,6 +466,24 @@ app.controller('ListCtrl', [
 		$scope.numberWithCommas = function(x) {
 			var ret = helper.numberWithCommas(String(x));
 			return ret;
+		}
+
+		$scope.search = function() {
+			var category = helper.escapeUrl($scope.category);
+			var keyword = helper.escapeUrl($scope.keyword);
+			var minPrice = helper.escapeUrl($scope.minPrice);
+			var maxPrice = helper.escapeUrl($scope.maxPrice);
+			var sources = '';
+			var sourcesI = 0;
+			$scope.selectedSources.forEach(function(str) {
+				if (str.trim!='') {
+					if (sourcesI>0) sources+='|||';
+					sources += str;
+					sourcesI++;
+				}
+			});
+			sources = helper.escapeUrl(sources);
+			$location.path('/list/'+category+'/'+keyword+'/'+minPrice+'/'+maxPrice+'/'+sources);
 		}
 	}
 ]);
