@@ -225,7 +225,8 @@ app.factory('search', [
 	function() {
 
 		var o = {
-			items: []
+			items: [],
+			count: 0
 		};
 
 		o.list = function(criteria, callback) {
@@ -234,8 +235,10 @@ app.factory('search', [
 				type: 'POST',
 				dataType: 'json',
 				success: function(data) {
-					if (data != null && typeof data.hits.hits != 'undefined')
+					if (data != null && typeof data.hits.hits != 'undefined') {
 						o.items = data.hits.hits;
+						o.count = data.hits.total;
+					}
 					callback();
 				}.bind(this),
 				error: function(xhr, status, err) {
@@ -367,11 +370,12 @@ app.controller('MainCtrl', [
 		}
 
 		$scope.search = function() {
+			var keyword = typeof $scope.keyword === 'undefined' ? '' : $scope.keyword;
 			search.save({
 				Id: id,
 				Token: token,
 				LoginType: 'fb',
-				Keyword: $scope.keyword.trim()
+				Keyword: keyword.trim()
 			});
 
 			var category = helper.escapeUrl($scope.category);
@@ -416,22 +420,6 @@ app.controller('ListCtrl', [
 		$scope.pageNo = helper.unescapeUrl($stateParams.pageNo);
 		if ($scope.pageNo=='') $scope.pageNo = '1';
 
-		var baseUrl = '/#/list/'+helper.escapeUrl($stateParams.category)+'/'+helper.escapeUrl($stateParams.keyword)+'/'+helper.escapeUrl($stateParams.minPrice)+'/'+helper.escapeUrl($stateParams.maxPrice)+'/'+helper.escapeUrl($stateParams.sources);
-		$scope.showLinkFirst = function() {
-			$scope.linkFirst = baseUrl;
-			if (Number($scope.pageNo)!=1) {
-				return true;
-			};
-			return false;
-		}
-		if ($scope.pageNo==1) {
-			$scope.linkActive1 = 'active';
-			$scope.linkValue1 = 1;
-		} else if ($scope.pageNo>1) {
-			$scope.linkValue1 = $scope.pageNo-2<1 ? 1 : $scope.pageNo-2;
-			$scope.link1 = baseUrl + '/' + $scope.linkValue1;
-		}
-
 		$scope.getCategories = function() {
 			master.getCategories(function() {
 				$timeout(function() {
@@ -464,6 +452,15 @@ app.controller('ListCtrl', [
 			}
 		};
 
+		$scope.linkFirst = '/#/list/'+helper.escapeUrl($stateParams.category)+'/'+helper.escapeUrl($stateParams.keyword)+'/'+helper.escapeUrl($stateParams.minPrice)+'/'+helper.escapeUrl($stateParams.maxPrice)+'/'+helper.escapeUrl($stateParams.sources);
+		$scope.linkPrev = $scope.linkFirst + '/' + ((Number($scope.pageNo))-1);
+		$scope.showLinkFirst = function() {
+			if (Number($scope.pageNo)!=1) {
+				return true;
+			};
+			return false;
+		}
+
 		$scope.listItems = function() {
 			var from = ((Number($scope.pageNo) - 1) * 10).toString();
 			search.list({
@@ -492,6 +489,20 @@ app.controller('ListCtrl', [
 						}
 						img.src = obj._source.ImageUri;
 					});
+
+					var lastPage = search.count / 10;
+					console.log(search.count,':',lastPage);
+					if (lastPage != Math.floor(lastPage)) {
+						lastPage = Math.floor(lastPage) + 1;
+					}
+					$scope.showLinkLast = function() {
+						if (Number($scope.pageNo)!=lastPage) {
+							return true;
+						};
+						return false;
+					}
+					$scope.linkNext = $scope.linkFirst + '/' + ((Number($scope.pageNo))+1);
+					$scope.linkLast = $scope.linkFirst + '/' + lastPage;
 				}, 0);
 			})
 		}
