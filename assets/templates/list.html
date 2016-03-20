@@ -32,7 +32,7 @@
 								<form role="form" ng-submit="search()">
 									<select class="form-control" id="form_category" name="form_category" ng-model="category" ng-init="getCategories()">
 										<option value="">=== Kategori ===</option>
-										<option ng-repeat="obj in categories | orderBy:'-CategoryOrder'" value="{{obj.Category}}" ng-selected="obj.Category===category">{{obj.Label}}</option>
+										<option ng-repeat="obj in categories | orderBy:'CategoryOrder'" value="{{obj.Category}}" ng-selected="obj.Category===category">{{obj.Label}}</option>
 									</select><br />
 									<input type="text" class="form-control" ng-model="keyword" placeholder="Kata kunci"><br />
 									<input type="tel" class="form-control" ng-model="minPrice" placeholder="Harga minimum" onkeypress="return isNumberKey(event);" onkeyup="this.value=numberWithCommas(this.value);" style="width:49%; float:left;">
