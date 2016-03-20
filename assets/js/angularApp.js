@@ -370,6 +370,7 @@ app.controller('MainCtrl', [
 		}
 
 		$scope.search = function() {
+			$('body').removeClass('modal-open');
 			var keyword = typeof $scope.keyword === 'undefined' ? '' : $scope.keyword;
 			search.save({
 				Id: id,
@@ -385,7 +386,7 @@ app.controller('MainCtrl', [
 			var sources = '';
 			var sourcesI = 0;
 			$scope.selectedSources.forEach(function(str) {
-				if (str.trim!='') {
+				if (str.trim()!='') {
 					if (sourcesI>0) sources+='|||';
 					sources += str;
 					sourcesI++;
@@ -517,6 +518,7 @@ app.controller('ListCtrl', [
 		}
 
 		$scope.search = function() {
+			$('body').removeClass('modal-open');
 			var category = helper.escapeUrl($scope.category);
 			var keyword = helper.escapeUrl($scope.keyword);
 			var minPrice = helper.escapeUrl($scope.minPrice);
@@ -524,7 +526,7 @@ app.controller('ListCtrl', [
 			var sources = '';
 			var sourcesI = 0;
 			$scope.selectedSources.forEach(function(str) {
-				if (str.trim!='') {
+				if (str.trim()!='') {
 					if (sourcesI>0) sources+='|||';
 					sources += str;
 					sourcesI++;
