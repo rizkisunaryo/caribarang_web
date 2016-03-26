@@ -1,4 +1,4 @@
-var app = angular.module('cariBarang', ['ui.router'])
+var app = angular.module('cariDulu', ['ui.router'])
 
 app.config([
 	'$stateProvider',
@@ -10,26 +10,6 @@ app.config([
 				url: '/home',
 				templateUrl: 'assets/templates/home.html',
 				controller: 'MainCtrl'
-			})
-			.state('test', {
-				url: '/test/{id}',
-				templateUrl: 'assets/templates/test.html',
-				controller: 'TestCtrl',
-			})
-			.state('testSl', {
-				url: '/test/{id}/',
-				templateUrl: 'assets/templates/test.html',
-				controller: 'TestCtrl',
-			})
-			.state('testLagi', {
-				url: '/test/{id}/lagi/{lagiId}',
-				templateUrl: 'assets/templates/test-lagi.html',
-				controller: 'TestLagiCtrl',
-			})
-			.state('testLagiSl', {
-				url: '/test/{id}/lagi/{lagiId}/',
-				templateUrl: 'assets/templates/test-lagi.html',
-				controller: 'TestLagiCtrl',
 			})
 			.state('list', {
 				url: '/list/{category}/{keyword}/{minPrice}/{maxPrice}/{sources}',
@@ -370,7 +350,7 @@ app.controller('MainCtrl', [
 		}
 
 		$scope.search = function() {
-			$('body').removeClass('modal-open');
+			// $('body').removeClass('modal-open');
 			var keyword = typeof $scope.keyword === 'undefined' ? '' : $scope.keyword;
 			search.save({
 				Id: id,
@@ -418,6 +398,8 @@ app.controller('ListCtrl', [
 		$scope.maxPrice = helper.unescapeUrl($stateParams.maxPrice);
 		var sourcesUrl = helper.unescapeUrl($stateParams.sources);
 		$scope.selectedSources = sourcesUrl.split('|||');
+		var emptyArrayIndex = $scope.selectedSources.indexOf('');
+		if (emptyArrayIndex > -1) $scope.selectedSources.splice(emptyArrayIndex, 1);
 		$scope.pageNo = helper.unescapeUrl($stateParams.pageNo);
 		if ($scope.pageNo=='') $scope.pageNo = '1';
 
@@ -518,7 +500,7 @@ app.controller('ListCtrl', [
 		}
 
 		$scope.search = function() {
-			$('body').removeClass('modal-open');
+			// $('body').removeClass('modal-open');
 			var category = helper.escapeUrl($scope.category);
 			var keyword = helper.escapeUrl($scope.keyword);
 			var minPrice = helper.escapeUrl($scope.minPrice);
