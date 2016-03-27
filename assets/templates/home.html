@@ -52,7 +52,7 @@
 			<span style="font-size: 1.5em;">{{numberWithCommas(obj._source.Price)}}</span><br>
 			<div class="cropped-image-container">
 				<a ng-mousedown="savePopular(obj._source.Uri)" href="{{obj._source.Uri}}" target="_blank">
-					<img class="cropped-image" style="max-width:100%;" src="assets/img/no-image.png" id="suggestions-preload-image_{{obj._id}}" />
+					<img class="cropped-image" style="max-width:100%;" src="assets/img/noimage.jpg" id="suggestions-preload-image_{{obj._id}}" />
 				</a>
 			</div>
 		</div>
@@ -84,7 +84,7 @@
 			<span style="font-size: 1.5em;">{{numberWithCommas(obj.Price)}}</span><br>
 			<div class="cropped-image-container">
 				<a ng-mousedown="savePopular('{{obj.Uri}}')" href="{{obj.Uri}}" target="_blank">
-					<img class="cropped-image" style="max-width:100%;" src="assets/img/no-image.png" id="popular-preload-image_{{obj.Id}}" />
+					<img class="cropped-image" style="max-width:100%;" src="assets/img/noimage.jpg" id="popular-preload-image_{{obj.Id}}" />
 				</a>
 			</div>
 		</div>
