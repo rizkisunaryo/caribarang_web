@@ -390,7 +390,6 @@ app.controller('ListCtrl', [
 	'popular',
 	function($scope, $stateParams, $timeout, $location, $sce, helper, search, master, popular) {
 		helper.checkFbLoginBtn();
-		$('.modal-backdrop.fade.in').remove();
 
 		$scope.category = helper.unescapeUrl($stateParams.category);
 		$scope.keyword = helper.unescapeUrl($stateParams.keyword);
@@ -474,7 +473,6 @@ app.controller('ListCtrl', [
 					});
 
 					var lastPage = search.count / 10;
-					console.log(search.count,':',lastPage);
 					if (lastPage != Math.floor(lastPage)) {
 						lastPage = Math.floor(lastPage) + 1;
 					}
@@ -500,22 +498,24 @@ app.controller('ListCtrl', [
 		}
 
 		$scope.search = function() {
-			// $('body').removeClass('modal-open');
-			var category = helper.escapeUrl($scope.category);
-			var keyword = helper.escapeUrl($scope.keyword);
-			var minPrice = helper.escapeUrl($scope.minPrice);
-			var maxPrice = helper.escapeUrl($scope.maxPrice);
-			var sources = '';
-			var sourcesI = 0;
-			$scope.selectedSources.forEach(function(str) {
-				if (str.trim()!='') {
-					if (sourcesI>0) sources+='|||';
-					sources += str;
-					sourcesI++;
-				}
-			});
-			sources = helper.escapeUrl(sources);
-			$location.path('/list/'+category+'/'+keyword+'/'+minPrice+'/'+maxPrice+'/'+sources);
+			$('#myModal').modal('hide');
+			$timeout(function() {
+				var category = helper.escapeUrl($scope.category);
+				var keyword = helper.escapeUrl($scope.keyword);
+				var minPrice = helper.escapeUrl($scope.minPrice);
+				var maxPrice = helper.escapeUrl($scope.maxPrice);
+				var sources = '';
+				var sourcesI = 0;
+				$scope.selectedSources.forEach(function(str) {
+					if (str.trim()!='') {
+						if (sourcesI>0) sources+='|||';
+						sources += str;
+						sourcesI++;
+					}
+				});
+				sources = helper.escapeUrl(sources);
+				$location.path('/list/'+category+'/'+keyword+'/'+minPrice+'/'+maxPrice+'/'+sources);
+			}, 500);
 		}
 	}
 ]);
