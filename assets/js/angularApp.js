@@ -485,11 +485,12 @@ app.controller('ListCtrl', [
 					}
 
 					$scope.linkFirst = '/#/list/'+helper.escapeUrl($stateParams.category)+'/'+helper.escapeUrl($stateParams.keyword)+'/'+helper.escapeUrl($stateParams.minPrice)+'/'+helper.escapeUrl($stateParams.maxPrice)+'/'+helper.escapeUrl($stateParams.sources);
-					$scope.linkPrev = $scope.linkFirst + '/' + ((Number($scope.pageNo))-1);
+					// $scope.linkPrev = $scope.linkFirst + '/' + ((Number($scope.pageNo))-1);
 					
 					var link1No = $scope.pageNo - 2;
-					if (link1No<1) link1No = 1;
-					else if (link1No>lastPage-4) link1No = lastPage - 4;
+					// if (link1No<1) link1No = 1;
+					if (link1No>lastPage-4) link1No = lastPage - 4;
+					if (link1No<0) link1No = 1;
 
 					$scope.link1 = $scope.linkFirst + '/' + link1No;
 					$scope.link1Label = link1No;
@@ -498,20 +499,24 @@ app.controller('ListCtrl', [
 					$scope.link2 = $scope.linkFirst + '/' + (link1No+1);
 					$scope.link2Label = link1No + 1;
 					if ($scope.pageNo == link1No + 1) $scope.link2Class = 'active';
+					$scope.showLink2 = lastPage >= link1No + 1;
 
 					$scope.link3 = $scope.linkFirst + '/' + (link1No+2);
 					$scope.link3Label = link1No + 2;
 					if ($scope.pageNo == link1No + 2) $scope.link3Class = 'active';
+					$scope.showLink3 = lastPage >= link1No + 2;
 
 					$scope.link4 = $scope.linkFirst + '/' + (link1No+3);
 					$scope.link4Label = link1No + 3;
 					if ($scope.pageNo == link1No + 3) $scope.link4Class = 'active';
+					$scope.showLink4 = lastPage >= link1No + 3;
 
 					$scope.link5 = $scope.linkFirst + '/' + (link1No+4);
 					$scope.link5Label = link1No + 4;
 					if ($scope.pageNo == link1No + 4) $scope.link5Class = 'active';
+					$scope.showLink5 = lastPage >= link1No + 4;
 
-					$scope.linkNext = $scope.linkFirst + '/' + ((Number($scope.pageNo))+1);
+					// $scope.linkNext = $scope.linkFirst + '/' + ((Number($scope.pageNo))+1);
 					$scope.linkLast = $scope.linkFirst + '/' + lastPage;
 				}, 0);
 			})

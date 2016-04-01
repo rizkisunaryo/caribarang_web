@@ -82,10 +82,10 @@
 				<li ng-show="showLinkFirst()"><a href="{{linkFirst}}">&lt;&lt;</a></li>
 				<!-- <li ng-show="showLinkFirst()"><a href="{{linkPrev}}">Prev</a></li> -->
 				<li class="{{link1Class}}"><a href="{{link1}}">{{link1Label}}</a></li>
-				<li class="{{link2Class}}"><a href="{{link2}}">{{link2Label}}</a></li>
-				<li class="{{link3Class}}"><a href="{{link3}}">{{link3Label}}</a></li>
-				<li class="{{link4Class}}"><a href="{{link4}}">{{link4Label}}</a></li>
-				<li class="{{link5Class}}"><a href="{{link5}}">{{link5Label}}</a></li>
+				<li ng-show="showLink2" class="{{link2Class}}"><a href="{{link2}}">{{link2Label}}</a></li>
+				<li ng-show="showLink3" class="{{link3Class}}"><a href="{{link3}}">{{link3Label}}</a></li>
+				<li ng-show="showLink4" class="{{link4Class}}"><a href="{{link4}}">{{link4Label}}</a></li>
+				<li ng-show="showLink5" class="{{link5Class}}"><a href="{{link5}}">{{link5Label}}</a></li>
 				<!-- <li ng-show="showLinkLast()"><a href="{{linkNext}}">Next</a></li> -->
 				<li ng-show="showLinkLast()"><a href="{{linkLast}}">&gt;&gt;</a></li>
 			</ul>
