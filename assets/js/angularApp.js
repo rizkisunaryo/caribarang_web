@@ -554,19 +554,19 @@ app.controller('ListCtrl', [
 	}
 ]);
 
-app.controller('TestCtrl', [
-	'$scope',
-	'$stateParams',
-	function($scope, $stateParams) {
-		$scope.id = $stateParams.id;
-	}
-]);
+// app.controller('TestCtrl', [
+// 	'$scope',
+// 	'$stateParams',
+// 	function($scope, $stateParams) {
+// 		$scope.id = $stateParams.id;
+// 	}
+// ]);
 
-app.controller('TestLagiCtrl', [
-	'$scope',
-	'$stateParams',
-	function($scope, $stateParams) {
-		$scope.id = $stateParams.id;
-		$scope.lagiId = $stateParams.lagiId;
-	}
-]);
+// app.controller('TestLagiCtrl', [
+// 	'$scope',
+// 	'$stateParams',
+// 	function($scope, $stateParams) {
+// 		$scope.id = $stateParams.id;
+// 		$scope.lagiId = $stateParams.lagiId;
+// 	}
+// ]);
