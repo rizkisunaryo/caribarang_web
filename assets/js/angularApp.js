@@ -258,7 +258,7 @@ app.controller('MainCtrl', [
 	'popular',
 	'search',
 	function($scope, $timeout, $location, master, helper, suggestions, popular, search) {
-		helper.checkFbLoginBtn();
+		// helper.checkFbLoginBtn();
 
 		$scope.getCategories = function() {
 			master.getCategories(function() {
@@ -352,12 +352,12 @@ app.controller('MainCtrl', [
 		$scope.search = function() {
 			// $('body').removeClass('modal-open');
 			var keyword = typeof $scope.keyword === 'undefined' ? '' : $scope.keyword;
-			search.save({
-				Id: id,
-				Token: token,
-				LoginType: 'fb',
-				Keyword: keyword.trim()
-			});
+			// search.save({
+			// 	Id: id,
+			// 	Token: token,
+			// 	LoginType: 'fb',
+			// 	Keyword: keyword.trim()
+			// });
 
 			var category = helper.escapeUrl($scope.category);
 			var keyword = helper.escapeUrl($scope.keyword);
@@ -389,7 +389,7 @@ app.controller('ListCtrl', [
 	'master',
 	'popular',
 	function($scope, $stateParams, $timeout, $location, $sce, helper, search, master, popular) {
-		helper.checkFbLoginBtn();
+		// helper.checkFbLoginBtn();
 
 		$scope.category = helper.unescapeUrl($stateParams.category);
 		$scope.keyword = helper.unescapeUrl($stateParams.keyword);
@@ -510,8 +510,6 @@ app.controller('ListCtrl', [
 					$scope.link4Label = link1No + 3;
 					if ($scope.pageNo == link1No + 3) $scope.link4Class = 'active';
 					$scope.showLink4 = lastPage >= link1No + 3;
-
-					console.log("lastPage:",lastPage,", link1No:",link1No)
 
 					$scope.link5 = $scope.linkFirst + '/' + (link1No+4);
 					$scope.link5Label = link1No + 4;

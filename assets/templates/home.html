@@ -9,12 +9,12 @@
 </style>
 
 <div class="container">
-	<div class="jumbotron">
+	<div class="jumbotron" style="margin-top:30px;">
 		<h1>CariDulu</h1>
 		<p style="color:blue;">Mau belanja online? Cari dulu di sini!</p>
 	</div>
 
-	<div class="row text-right" style="margin-right:5px; margin-bottom:20px;" id="fb-div"></div>
+	<!-- <div class="row text-right" style="margin-right:5px; margin-bottom:20px;" id="fb-div"></div> -->
 
 	<div class="row">
 		<div class="col-sm-3"></div>
@@ -58,14 +58,14 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-		function fbLoginSuccessCallback() {
-			angular.element(document.getElementById('angularBridge')).scope().getSuggestions({
-				Id: id,
-				Token: token,
-				LoginType: 'fb',
-				Size: '5'
-			});
-		}
+		// function fbLoginSuccessCallback() {
+		// 	angular.element(document.getElementById('angularBridge')).scope().getSuggestions({
+		// 		Id: id,
+		// 		Token: token,
+		// 		LoginType: 'fb',
+		// 		Size: '5'
+		// 	});
+		// }
 	</script>
 
 	<!-- ==========
