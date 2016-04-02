@@ -490,7 +490,7 @@ app.controller('ListCtrl', [
 					var link1No = $scope.pageNo - 2;
 					// if (link1No<1) link1No = 1;
 					if (link1No>lastPage-4) link1No = lastPage - 4;
-					if (link1No<0) link1No = 1;
+					if (link1No<=0) link1No = 1;
 
 					$scope.link1 = $scope.linkFirst + '/' + link1No;
 					$scope.link1Label = link1No;
@@ -510,6 +510,8 @@ app.controller('ListCtrl', [
 					$scope.link4Label = link1No + 3;
 					if ($scope.pageNo == link1No + 3) $scope.link4Class = 'active';
 					$scope.showLink4 = lastPage >= link1No + 3;
+
+					console.log("lastPage:",lastPage,", link1No:",link1No)
 
 					$scope.link5 = $scope.linkFirst + '/' + (link1No+4);
 					$scope.link5Label = link1No + 4;
