@@ -63,11 +63,11 @@
 			<div ng-repeat="obj in arr" class="item-container text-center">
 				<span style="font-weight: bold;">{{obj._source.Source}}</span><br>
 				<div style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; width: 100%">
-					<a ng-mousedown="savePopular(obj._source.Uri)" href="{{obj._source.Uri}}" target="_blank">{{obj._source.Name}}</a>
+					<a ng-mousedown="savePopular(obj._source.Uri)" href="{{obj._source.Uri}}" target="_blank" title="{{obj._source.Name}}">{{obj._source.Name}}</a>
 				</div>
 				<span style="font-size: 1.5em;">{{numberWithCommas(obj._source.Price)}}</span><br>
 				<div class="cropped-image-container">
-					<a ng-mousedown="savePopular(obj._source.Uri)" href="{{obj._source.Uri}}" target="_blank">
+					<a ng-mousedown="savePopular(obj._source.Uri)" href="{{obj._source.Uri}}" target="_blank" title="{{obj._source.Name}}">
 						<img class="cropped-image" style="max-width:100%;" src="assets/img/noimage.jpg" id="item-preload-image_{{obj._id}}" />
 					</a>
 				</div>
