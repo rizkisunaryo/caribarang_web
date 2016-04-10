@@ -125,6 +125,16 @@ app.factory('helper', [
 			checkFbLoginBtnInside();
 		}
 
+		o.guid = function() {
+			function s4() {
+				return Math.floor((1 + Math.random()) * 0x10000)
+				.toString(16)
+				.substring(1);
+			}
+			return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+				s4() + '-' + s4() + s4() + s4();
+		}
+
 		return o;
 	}
 ]);
@@ -215,9 +225,9 @@ app.factory('search', [
 				type: 'POST',
 				dataType: 'json',
 				success: function(data) {
-					if (data != null && typeof data.hits.hits != 'undefined') {
-						o.items = data.hits.hits;
-						o.count = data.hits.total;
+					if (data != null && typeof data.Data != 'undefined') {
+						o.items = data.Data;
+						o.count = data.DataCount;
 					}
 					callback();
 				}.bind(this),
@@ -455,12 +465,13 @@ app.controller('ListCtrl', [
 					};
 					$scope.$apply;
 
-					search.items.forEach(function(obj) {
+					search.items.forEach(function(obj, index) {
 						var img = new Image();
+						search.items[index].Key = helper.guid();
 						img.onload = function() {
-							$('#item-preload-image_' + obj._id).attr('src', obj._source.ImageUri);
+							$('#item-preload-image_' + obj.Key).attr('src', obj.ImageUri);
 						}
-						img.src = obj._source.ImageUri;
+						img.src = obj.ImageUri;
 					});
 
 
